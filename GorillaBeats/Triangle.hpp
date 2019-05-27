@@ -17,6 +17,7 @@
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
 #include "Object.h"
+#include "Shader.h"
 
 using namespace std;
 
@@ -27,10 +28,7 @@ public:
     Triangle(float *v1, float *v2, float *v3);
     void setColour();
     // Setters and getters for shaders
-    void setVertex(const char* tar);
-    const char* getVertex();
-    void setFragment(const char* tar);
-    const char* getFragment();
+    
     void ready();
     void render();
     
@@ -41,12 +39,10 @@ private:
     float *v2Pos;
     float *v3Pos;
     float *vertices;
-    const char *vertexShaderSource;
-    const char *fragmentShaderSource;
     void init();
     unsigned int VBO, VAO;
-    int shaderProgram;
-
+    
+    Shader sd;
 };
 
 #endif /* Triangle_hpp */
