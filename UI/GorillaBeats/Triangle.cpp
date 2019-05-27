@@ -51,7 +51,7 @@ void Triangle:: init()
         0.0f,  0.5f, 0.0f
     };
     
-    sd = Shader("./Shaders/vertex.vs", "./Shaders/fragment.fs");
+    sd = Shader("vertex.vs", "fragment.fs");
 
     
 }

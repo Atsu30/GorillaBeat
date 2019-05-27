@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FD2BE5B4229C31CD00D84DFA /* Shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD2BE5B2229C30CB00D84DFA /* Shaders */; };
 		FD3C8FE12296676D0013ED05 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD3C8FE02296676D0013ED05 /* main.cpp */; };
 		FD3C8FE9229667B30013ED05 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FE8229667B30013ED05 /* OpenGL.framework */; };
 		FD3C8FED2296683A0013ED05 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FEC2296683A0013ED05 /* libGLEW.2.1.0.dylib */; };
@@ -15,6 +14,8 @@
 		FD3C8FF122969A6E0013ED05 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FF022969A6E0013ED05 /* GLUT.framework */; };
 		FD46533D22985DDF00E1E88D /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD46533B22985DDF00E1E88D /* Triangle.cpp */; };
 		FD46534022987D1000E1E88D /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD46533E22987D1000E1E88D /* Window.cpp */; };
+		FD8CD575229C46A300D3506C /* vertex.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD8CD573229C45E100D3506C /* vertex.vs */; };
+		FD8CD576229C46B100D3506C /* fragment.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD8CD574229C45F000D3506C /* fragment.fs */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +25,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				FD2BE5B4229C31CD00D84DFA /* Shaders in CopyFiles */,
+				FD8CD576229C46B100D3506C /* fragment.fs in CopyFiles */,
+				FD8CD575229C46A300D3506C /* vertex.vs in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		FD2BE5AC229C24D000D84DFA /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
-		FD2BE5B2229C30CB00D84DFA /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shaders; path = "../../../Library/Developer/Xcode/DerivedData/GorillaBeats-hgfctkqicfkgzaetjbbjnfdpzxrr/Build/Products/Debug/Shaders"; sourceTree = "<group>"; };
 		FD3C8FDD2296676C0013ED05 /* GorillaBeats */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GorillaBeats; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD3C8FE02296676D0013ED05 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		FD3C8FE8229667B30013ED05 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -54,6 +55,8 @@
 		FD46533E22987D1000E1E88D /* Window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		FD46533F22987D1000E1E88D /* Window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Window.hpp; sourceTree = "<group>"; };
 		FD465343229BB54D00E1E88D /* Object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
+		FD8CD573229C45E100D3506C /* vertex.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = vertex.vs; sourceTree = "<group>"; };
+		FD8CD574229C45F000D3506C /* fragment.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = fragment.fs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +94,7 @@
 		FD3C8FDF2296676C0013ED05 /* GorillaBeats */ = {
 			isa = PBXGroup;
 			children = (
-				FD2BE5B2229C30CB00D84DFA /* Shaders */,
+				FD8CD572229C45AD00D3506C /* Shader */,
 				FD3C8FE02296676D0013ED05 /* main.cpp */,
 				FD46533E22987D1000E1E88D /* Window.cpp */,
 				FD46533F22987D1000E1E88D /* Window.hpp */,
@@ -113,6 +116,15 @@
 				FD3C8FE8229667B30013ED05 /* OpenGL.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FD8CD572229C45AD00D3506C /* Shader */ = {
+			isa = PBXGroup;
+			children = (
+				FD8CD573229C45E100D3506C /* vertex.vs */,
+				FD8CD574229C45F000D3506C /* fragment.fs */,
+			);
+			path = Shader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
