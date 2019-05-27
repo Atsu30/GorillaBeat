@@ -162,6 +162,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     int width0, height0;
     glfwGetFramebufferSize(window, &width0, &height0);
+    
         //reshape(window, width, height);
     
     // clear buffers
@@ -282,7 +283,8 @@ int main(int argc, char* argv[]) {
     
     // initialize the window system
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(camera_width, camera_height, "Exercise 8 - Combine", NULL, NULL);
+    window = glfwCreateWindow(camera_width/2, camera_height/2, "Exercise 8 - Combine", NULL, NULL);
+    
     if (!window)
     {
         glfwTerminate();
@@ -296,7 +298,11 @@ int main(int argc, char* argv[]) {
     glfwSwapInterval( 1 );
     
     int window_width, window_height;
-    glfwGetFramebufferSize(window, &window_width, &window_height);
+    
+    glfwGetFramebufferSize(window, &window_width, &window_height);  //window_width:1696 window_height:960
+    // camera_width  = 848, camera_height = 480;
+    std::cout << "width0:" << window_width << " height:" << window_height << std::endl;
+    
     reshape(window, window_width, window_height);
     
     glViewport(0, 0, window_width, window_height);
@@ -307,7 +313,7 @@ int main(int argc, char* argv[]) {
     // setup OpenCV
     cv::Mat img_bgr;
     InitializeVideoStream(cap);
-    const double kMarkerSize = 0.03;// 0.048; // [m]
+    const double kMarkerSize = 0.048;// 0.03; // [m]
     MarkerTracker markerTracker(kMarkerSize);
     
     std::vector<Marker> markers;
