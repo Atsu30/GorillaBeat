@@ -211,15 +211,20 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
             resultTransposedMatrix[x*4+y] = resultMatrix_005A[y*4+x];
     // Added in Exercise 9 - End *****************************************************************
     
+    // Fixed tranlate scale
+    float scale = 0.5;
+    resultTransposedMatrix[12] *= scale;
+    resultTransposedMatrix[13] *= scale;
+    
     //glLoadTransposeMatrixf( resultMatrix );
     glLoadMatrixf( resultTransposedMatrix );
     drawSnowman();
     
     
     // Added in Exercise 9 - Start *****************************************************************
-    rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
+    //rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
     
-    drawSnowman();
+    //drawSnowman();
     
     for (int x=0; x<4; ++x)
         for (int y=0; y<4; ++y)
@@ -227,25 +232,25 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     glLoadMatrixf( resultTransposedMatrix );
     
-    rotateToMarker(resultMatrix_0272, resultMatrix_005A, 0x0272);
+    //rotateToMarker(resultMatrix_0272, resultMatrix_005A, 0x0272);
     
-    drawSnowman();
+    //drawSnowman();
     
     //drawBall
-    glLoadIdentity();
-    glTranslatef((float) ballpos.x, (float) ballpos.y + 0.024f, (float) ballpos.z);
-    glColor4f(1,0,0,1);
-    drawSphere(0.005, 10, 10);
+//    glLoadIdentity();
+//    glTranslatef((float) ballpos.x, (float) ballpos.y + 0.024f, (float) ballpos.z);
+//    glColor4f(1,0,0,1);
+//    drawSphere(0.005, 10, 10);
     // Added in Exercise 9 - End *****************************************************************
     
     
     //drawBall
-    for (int x=0; x<4; ++x)
-        for (int y=0; y<4; ++y)
-            resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
-    glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix );
-    drawSphere(0.005, 10, 10);
+//    for (int x=0; x<4; ++x)
+//        for (int y=0; y<4; ++y)
+//            resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
+//    glLoadIdentity();
+//    glLoadMatrixf( resultTransposedMatrix );
+//    drawSphere(0.005, 10, 10);
     
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
@@ -313,7 +318,7 @@ int main(int argc, char* argv[]) {
     // setup OpenCV
     cv::Mat img_bgr;
     InitializeVideoStream(cap);
-    const double kMarkerSize = 0.048;// 0.03; // [m]
+    const double kMarkerSize = 0.08;// 0.03; // [m]
     MarkerTracker markerTracker(kMarkerSize);
     
     std::vector<Marker> markers;
