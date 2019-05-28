@@ -11,7 +11,6 @@
 		5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC04812229BC42B005BB094 /* PoseEstimation.cpp */; };
 		5DC04817229BC7A9005BB094 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC04816229BC7A9005BB094 /* OpenGL.framework */; };
 		5DC04819229BC819005BB094 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC04818229BC819005BB094 /* libglfw.3.3.dylib */; };
-		5DC0481B229BC8F5005BB094 /* MarkerTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0481A229BC8F5005BB094 /* MarkerTracker.cpp */; };
 		5DC744512296639900771726 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC744502296639900771726 /* main.cpp */; };
 		5DC744592296656100771726 /* libopencv_highgui.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC744582296656100771726 /* libopencv_highgui.4.1.0.dylib */; };
 		5DC7448922968A4F00771726 /* libopencv_dpm.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC7445A22968A4E00771726 /* libopencv_dpm.4.1.0.dylib */; };
@@ -61,6 +60,7 @@
 		5DC744B522968A4F00771726 /* libopencv_imgcodecs.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC7448622968A4F00771726 /* libopencv_imgcodecs.4.1.0.dylib */; };
 		5DC744B622968A4F00771726 /* libopencv_calib3d.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC7448722968A4F00771726 /* libopencv_calib3d.4.1.0.dylib */; };
 		5DC744B722968A4F00771726 /* libopencv_flann.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC7448822968A4F00771726 /* libopencv_flann.4.1.0.dylib */; };
+		FD3FD423229D0E6D00657C58 /* MarkerTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -84,7 +84,6 @@
 		5DC04815229BC43B005BB094 /* DrawPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawPrimitives.h; sourceTree = "<group>"; };
 		5DC04816229BC7A9005BB094 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		5DC04818229BC819005BB094 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
-		5DC0481A229BC8F5005BB094 /* MarkerTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MarkerTracker.cpp; path = "../../../Downloads/Final 2/MarkerTracker.cpp"; sourceTree = "<group>"; };
 		5DC7444D2296639900771726 /* ARClassProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ARClassProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DC744502296639900771726 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		5DC744582296656100771726 /* libopencv_highgui.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_highgui.4.1.0.dylib; sourceTree = "<group>"; };
@@ -135,6 +134,7 @@
 		5DC7448622968A4F00771726 /* libopencv_imgcodecs.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgcodecs.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_imgcodecs.4.1.0.dylib; sourceTree = "<group>"; };
 		5DC7448722968A4F00771726 /* libopencv_calib3d.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_calib3d.4.1.0.dylib; sourceTree = "<group>"; };
 		5DC7448822968A4F00771726 /* libopencv_flann.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_flann.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_flann.4.1.0.dylib; sourceTree = "<group>"; };
+		FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MarkerTracker.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +221,7 @@
 				5DC744502296639900771726 /* main.cpp */,
 				5D69EE57229BAFD30006542A /* Info.plist */,
 				5DC0480F229BC40E005BB094 /* MarkerTracker.h */,
-				5DC0481A229BC8F5005BB094 /* MarkerTracker.cpp */,
+				FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */,
 				5DC04814229BC432005BB094 /* PoseEstimation.h */,
 				5DC04812229BC42B005BB094 /* PoseEstimation.cpp */,
 				5DC04815229BC43B005BB094 /* DrawPrimitives.h */,
@@ -344,7 +344,7 @@
 			files = (
 				5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */,
 				5DC744512296639900771726 /* main.cpp in Sources */,
-				5DC0481B229BC8F5005BB094 /* MarkerTracker.cpp in Sources */,
+				FD3FD423229D0E6D00657C58 /* MarkerTracker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +474,7 @@
 					/usr/local/include/,
 					/usr/local/Cellar/glfw/3.3/include/,
 				);
-				INFOPLIST_FILE = /Users/moriatsushi/MyFolder/ARClassProject/ARClassProject/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ARClassProject/Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/opencv/4.1.0_2/lib,
@@ -498,7 +498,7 @@
 					/usr/local/include/,
 					/usr/local/Cellar/glfw/3.3/include/,
 				);
-				INFOPLIST_FILE = /Users/moriatsushi/MyFolder/ARClassProject/ARClassProject/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ARClassProject/Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/opencv/4.1.0_2/lib,

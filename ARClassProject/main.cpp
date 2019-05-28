@@ -32,6 +32,7 @@ int towardscounter = 0;
 const int camera_width  = 848;
 const int camera_height = 480;
 //const int virtual_camera_angle = 30;
+
 unsigned char bkgnd[camera_width*camera_height*3];
 
 void InitializeVideoStream( cv::VideoCapture &camera ) {
@@ -162,7 +163,6 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     glLoadMatrixf( resultTransposedMatrix );
     
-    
     // draw Text
     
     
@@ -200,7 +200,6 @@ bool checkMarker(std::vector<Marker> &markers, int check_code){
 int main(int argc, char* argv[]) {
     
     cv::VideoCapture cap;
-    
     GLFWwindow* window;
     
     /* Initialize the library */
@@ -227,7 +226,6 @@ int main(int argc, char* argv[]) {
     int window_width, window_height;
     
     glfwGetFramebufferSize(window, &window_width, &window_height);  //window_width:1696 window_height:960
-    // camera_width  = 848, camera_height = 480;
     
     reshape(window, window_width, window_height);
     
@@ -266,7 +264,7 @@ int main(int argc, char* argv[]) {
         /* Track a marker */
         markerTracker.findMarker( img_bgr, markers);///resultMatrix);
         
-//        std::cout << img_bgr.size() << std::endl;
+       // std::cout << img_bgr.size() << std::endl;
 //                cv::imshow("img_bgr", img_bgr);
 //                cv::waitKey(10); /// Wait for one sec.
         
