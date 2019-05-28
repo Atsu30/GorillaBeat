@@ -6,15 +6,28 @@
 #include "Window.hpp"
 #include "Triangle.hpp"
 #include "Line.hpp"
+#include "Rectangle.hpp"
 const char* TITLE = "Gorilla Beats";
+
 
 int main() {
   Window w = Window(800, 600, TITLE);
   if (w.create(true) != -1) {
-//    Triangle* d = new Triangle();
-//    w.add(d);
-    Line *l = new Line();
+    float tv1[] = {0.0f,0.0f};
+    float tv2[] = {0.5f,0.0f};
+    float tv3[] = {0.0f,-0.5f};
+    Triangle* d = new Triangle(tv1,tv2,tv3);
+    w.add(d);
+    
+    float lv1[] = {0.0f, 0.0f};
+    float lv2[] = {-0.5f,-0.5f};
+    Line *l = new Line(lv1,lv2);
     w.add(l);
+    
+    float v1[] = {-0.5f, 0.5f};
+    float size[] = {0.5f, 0.5f};
+    Rectangle* r = new Rectangle(v1,size);
+    w.add(r);
     
     w.run();
   } else {
