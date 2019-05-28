@@ -60,5 +60,6 @@ void Line::render() {
 
 void Line::init() {
   vertices = new float[4]{0.0f, 0.0f, 0.0f, 0.5f};
-  sd = Shader("vertex.vs", "fragment.fs");
+  this->setShaderPath("vertex.vs", "fragment.fs");
+  sd = Shader(this->vertexShaderPath, this->fragmentShaderPath);
 }

@@ -34,8 +34,8 @@ class Triangle : public Object {
   float *vertices;
   void init();
   unsigned int VBO, VAO;
-
   Shader sd;
+
 };
 
 #endif /* Triangle_hpp */

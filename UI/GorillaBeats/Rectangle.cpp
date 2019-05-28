@@ -35,7 +35,8 @@ void Rectangle::init() {
     1,2,3
   };
   
-  sd = Shader("vertex.vs", "fragment.fs");
+  this->setShaderPath("vertex.vs", "fragment.fs");
+  sd = Shader(this->vertexShaderPath, this->fragmentShaderPath);
 }
 
 void Rectangle::ready() {

@@ -9,13 +9,23 @@
 #ifndef Object_h
 #define Object_h
 class Object {
- public:
+public:
   virtual void render() {
     // to be inherited
   }
   virtual void ready() {
     // to be inherited
   }
+  void setShaderPath(char* vertexPath, char* fragmentPath)
+  {
+    this->vertexShaderPath = vertexPath;
+    this->fragmentShaderPath = fragmentPath;
+  }
+  
+protected:
+  char* vertexShaderPath;
+  char* fragmentShaderPath;
+  
 };
 
 #endif /* Object_h */

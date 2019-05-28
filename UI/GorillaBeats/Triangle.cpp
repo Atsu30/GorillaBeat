@@ -36,8 +36,8 @@ Triangle::Triangle(float *v1, float *v2, float *v3) {
 void Triangle::init() {
   vertices =
       new float[9]{-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
-
-  sd = Shader("vertex.vs", "fragment.fs");
+  this->setShaderPath("vertex.vs", "fragment.fs");
+  sd = Shader(this->vertexShaderPath, this->fragmentShaderPath);
 }
 
 void Triangle::ready() {
