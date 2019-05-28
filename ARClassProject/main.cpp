@@ -33,8 +33,8 @@ int ballspeed = 100;
 // Added in Exercise 9 - End *****************************************************************
 
 //camera settings
-const int camera_width  = 848;
-const int camera_height = 480;
+const int camera_width  = 1280;
+const int camera_height = 720;
 const int virtual_camera_angle = 30;
 unsigned char bkgnd[camera_width*camera_height*3];
 
@@ -231,7 +231,8 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
             resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
     
     glLoadMatrixf( resultTransposedMatrix );
-    
+  
+  
     //rotateToMarker(resultMatrix_0272, resultMatrix_005A, 0x0272);
     
     //drawSnowman();
@@ -278,7 +279,6 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
     
     cv::VideoCapture cap;
-    
     GLFWwindow* window;
     
     /* Initialize the library */
@@ -305,7 +305,7 @@ int main(int argc, char* argv[]) {
     int window_width, window_height;
     
     glfwGetFramebufferSize(window, &window_width, &window_height);  //window_width:1696 window_height:960
-    // camera_width  = 848, camera_height = 480;
+    // 3camera_width  = 848, camera_height = 480;
     std::cout << "width0:" << window_width << " height:" << window_height << std::endl;
     
     reshape(window, window_width, window_height);
@@ -340,7 +340,7 @@ int main(int argc, char* argv[]) {
         /* Track a marker */
         markerTracker.findMarker( img_bgr, markers);///resultMatrix);
         
-//        std::cout << img_bgr.size() << std::endl;
+       // std::cout << img_bgr.size() << std::endl;
 //                cv::imshow("img_bgr", img_bgr);
 //                cv::waitKey(10); /// Wait for one sec.
         
