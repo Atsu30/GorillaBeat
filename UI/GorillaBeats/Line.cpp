@@ -15,13 +15,44 @@ Line::Line(float *v1, float *v2) {
   vertices[0] = v1[0];
   vertices[1] = v2[1];
 }
-void Line::ready()
-{
-  
+void Line::ready() {
+  // setting up VAOs and VBOs
+
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+  // bind the Vertex Array Object first, then bind and set vertex buffer(s), and
+  // then configure vertex attributes(s).
+  glBindVertexArray(VAO);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4, vertices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 * sizeof(float), (void *)0);
+  glEnableVertexAttribArray(0);
+
+  // note that this is allowed, the call to glVertexAttribPointer registered VBO
+  // as the vertex attribute's bound vertex buffer object so afterwards we can
+  // safely unbind
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  // You can unbind the VAO afterwards so other VAO calls won't accidentally
+  // modify this VAO, but this rarely happens. Modifying other
+  // VAOs requires a call to glBindVertexArray anyways so we generally don't
+  // unbind VAOs (nor VBOs) when it's not directly necessary.
+  glBindVertexArray(0);
 }
-void Line::render()
-{
-  
+void Line::render() {
+  sd.use();
+  // draw our first triangle
+  glBindVertexArray(
+      VAO);  // seeing as we only have a single VAO there's no need
+  // to bind it every time, but we'll do so to keep
+  // things a bit more organized
+  glDrawArrays(GL_LINES, 0, 2);
+  glBindVertexArray(0);  // no need to unbind it every time
 }
 
-void Line::init() { vertices = new float[4]{0.0f, 0.0f, 0.0f, 0.5f}; }
+void Line::init() {
+  vertices = new float[4]{0.0f, 0.0f, 0.0f, 0.5f};
+  sd = Shader("vertex.vs", "fragment.fs");
+}
