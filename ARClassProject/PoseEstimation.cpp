@@ -542,7 +542,7 @@ void estimateSquarePose( float* result, const cv::Point2f* p2D_, float markerSiz
 		p2D[i].y = p2D_[i].y;
 	}
 	estimateSquarePose_( result, p2D, markerSize );
-	delete p2D;
+	delete[] p2D;
 };
 
 /** 

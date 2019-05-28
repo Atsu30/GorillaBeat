@@ -16,7 +16,6 @@
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
 
-// Added in Exercise 9 - Start *****************************************************************
 
 struct Position { double x,y,z; };
 
@@ -28,14 +27,11 @@ float snowmanLookVector[4];
 int towards = 0x005A;
 int towardsList[2] = {0x005a, 0x0272};
 int towardscounter = 0;
-Position ballpos;
-int ballspeed = 100;
-// Added in Exercise 9 - End *****************************************************************
 
 //camera settings
 const int camera_width  = 848;
 const int camera_height = 480;
-const int virtual_camera_angle = 30;
+//const int virtual_camera_angle = 30;
 unsigned char bkgnd[camera_width*camera_height*3];
 
 void InitializeVideoStream( cv::VideoCapture &camera ) {
@@ -53,7 +49,6 @@ void InitializeVideoStream( cv::VideoCapture &camera ) {
     }
 }
 
-// Added in Exercise 9 - Start *****************************************************************
 void multMatrix(float mat[16], float vec[4])
 {
     for(int i=0; i<4; i++)
@@ -64,75 +59,16 @@ void multMatrix(float mat[16], float vec[4])
     }
 }
 
-void moveBall(float mat[16])
-{
-    float vector[3];
-    vector[0] = mat[3]  - (float)ballpos.x;
-    vector[1] = mat[7]  - (float)ballpos.y;
-    vector[2] = mat[11] - (float)ballpos.z;
-    
-    float length = sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
-    if(balldebug) std::cout << length << std::endl;
-    if( length < 0.01)
-    {
-        towards = towardsList[(towardscounter++)%2];
-        if(balldebug) std::cout << "target changed to marker " << towards << std::endl;
-        ballspeed = 60 + 80 * rand()/RAND_MAX;
-        return;
-    }
-    ballpos.x += vector[0] / (ballspeed * length);
-    ballpos.y += vector[1] / (ballspeed * length);
-    ballpos.z += vector[2] / (ballspeed * length);
-    
-}
-
-void rotateToMarker(float thisMarker[16], float lookAtMarker[16], int markernumber)
-{
-    float vector[3];
-    vector[0] = lookAtMarker[3] - thisMarker[3];
-    vector[1] = lookAtMarker[7] - thisMarker[7];
-    vector[2] = lookAtMarker[11] - thisMarker[11];
-    
-    if(towards == markernumber) moveBall(lookAtMarker);
-    
-    //normalize vector
-    float help = sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
-    vector[0] /= help;
-    vector[1] /= help;
-    vector[2] /= help;
-    
-    if(debugmode) std::cout << "Vector: " << vector[0] << ", " << vector[1] << ", " << vector[2] << std::endl;
-    
-    float defaultLook[4] = {1,0,0,0};
-    multMatrix(thisMarker, defaultLook);
-    
-    //normalize snowmanLookVector
-    help = sqrt( snowmanLookVector[0]*snowmanLookVector[0] + snowmanLookVector[1]*snowmanLookVector[1] + snowmanLookVector[2]*snowmanLookVector[2] );
-    snowmanLookVector[0] /= help;
-    snowmanLookVector[1] /= help;
-    snowmanLookVector[2] /= help;
-    
-    if(debugmode) std::cout << "SnowmanLookVector: " << snowmanLookVector[0] << ", " << snowmanLookVector[1] << ", " << snowmanLookVector[2] << std::endl;
-    
-    float angle = ((float) (180.0 / M_PI)) * acos( vector[0] * snowmanLookVector[0] + vector[1] * snowmanLookVector[1] + vector[2] * snowmanLookVector[2] );
-    if((vector[0] * snowmanLookVector[1] - vector[1] * snowmanLookVector[0]) < 0 ) angle *= -1;
-    
-    if(debugmode) std::cout << "Angle: " << angle << std::endl;
-    
-    glRotatef(angle, 0, 0, 1);
-}
-// Added in Exercise 9 - End *****************************************************************
-
 /* program & OpenGL initialization */
 void initGL(int argc, char *argv[])
 {
     // initialize the GL library
-    // Added in Exercise 8 - End *****************************************************************
+    
     // pixel storage/packing stuff
     glPixelStorei(GL_PACK_ALIGNMENT, 1);// for glReadPixels
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // for glTexImage2D
     glPixelZoom(1.0, -1.0);
-    // Added in Exercise 8 - End *****************************************************************
+    
     // enable and set colors
     glEnable( GL_COLOR_MATERIAL );
     glClearColor( 0, 0, 0, 1.0 );
@@ -154,16 +90,16 @@ void initGL(int argc, char *argv[])
     glEnable( GL_LIGHT0 );
 }
 
-void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &markers)
+void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &markers, const bool hit_flag)
 {
-    const auto camera_image_size = sizeof(unsigned char) *img_bgr.rows*img_bgr.cols * 3;
+    //const auto camera_image_size = sizeof(unsigned char) *img_bgr.rows*img_bgr.cols * 3;
     auto background_buffer_size = sizeof(bkgnd);
     memcpy(bkgnd, img_bgr.data, background_buffer_size);
     
     int width0, height0;
     glfwGetFramebufferSize(window, &width0, &height0);
     
-        //reshape(window, width, height);
+    //reshape(window, width, height);
     
     // clear buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -191,7 +127,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     // move to marker-position
     glMatrixMode( GL_MODELVIEW );
     
-    // Added in Exercise 9 - Start *****************************************************************
+    // draw something at marker position
     float resultMatrix_005A[16];
     float resultMatrix_0272[16];
     for(int i=0; i<markers.size(); i++){
@@ -205,11 +141,10 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
         }
     }
     
-    
+    // draw image at the marker(id:005A)
     for (int x=0; x<4; ++x)
         for (int y=0; y<4; ++y)
             resultTransposedMatrix[x*4+y] = resultMatrix_005A[y*4+x];
-    // Added in Exercise 9 - End *****************************************************************
     
     // Fixed tranlate scale
     float scale = 0.5;
@@ -220,44 +155,21 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     glLoadMatrixf( resultTransposedMatrix );
     drawSnowman();
     
-    
-    // Added in Exercise 9 - Start *****************************************************************
-    //rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
-    
-    //drawSnowman();
-    
+    // draw image at the marker(id:0272)
     for (int x=0; x<4; ++x)
         for (int y=0; y<4; ++y)
             resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
     
     glLoadMatrixf( resultTransposedMatrix );
     
-    //rotateToMarker(resultMatrix_0272, resultMatrix_005A, 0x0272);
     
-    //drawSnowman();
+    // draw Text
     
-    //drawBall
-//    glLoadIdentity();
-//    glTranslatef((float) ballpos.x, (float) ballpos.y + 0.024f, (float) ballpos.z);
-//    glColor4f(1,0,0,1);
-//    drawSphere(0.005, 10, 10);
-    // Added in Exercise 9 - End *****************************************************************
-    
-    
-    //drawBall
-//    for (int x=0; x<4; ++x)
-//        for (int y=0; y<4; ++y)
-//            resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
-//    glLoadIdentity();
-//    glLoadMatrixf( resultTransposedMatrix );
-//    drawSphere(0.005, 10, 10);
     
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
-    // Added in Exercise 9 - Start *****************************************************************
     else if (key == 100) debugmode = !debugmode;
     else if (key == 98) balldebug = !balldebug;
-    // Added in Exercise 9 - End *****************************************************************
     
 }
 
@@ -275,6 +187,16 @@ void reshape( GLFWwindow* window, int width, int height ) {
     //glutPostRedisplay();
 }
 
+bool checkMarker(std::vector<Marker> &markers, int check_code){
+    for(int i=0; i<markers.size(); i++){
+        const int code =markers[i].code;
+        if(code == check_code) {
+            return true;
+        }
+    }
+    return false;
+}
+
 int main(int argc, char* argv[]) {
     
     cv::VideoCapture cap;
@@ -288,7 +210,7 @@ int main(int argc, char* argv[]) {
     
     // initialize the window system
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(camera_width/2, camera_height/2, "Exercise 8 - Combine", NULL, NULL);
+    window = glfwCreateWindow(camera_width/2, camera_height/2, "Game Window", NULL, NULL);
     
     if (!window)
     {
@@ -306,7 +228,6 @@ int main(int argc, char* argv[]) {
     
     glfwGetFramebufferSize(window, &window_width, &window_height);  //window_width:1696 window_height:960
     // camera_width  = 848, camera_height = 480;
-    std::cout << "width0:" << window_width << " height:" << window_height << std::endl;
     
     reshape(window, window_width, window_height);
     
@@ -322,7 +243,12 @@ int main(int argc, char* argv[]) {
     MarkerTracker markerTracker(kMarkerSize);
     
     std::vector<Marker> markers;
+    
+    int hit_cnt = 0;
+    int time = 0;
+    bool hit_flag = bool;
     //    float resultMatrix[16];
+    
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -344,8 +270,23 @@ int main(int argc, char* argv[]) {
 //                cv::imshow("img_bgr", img_bgr);
 //                cv::waitKey(10); /// Wait for one sec.
         
+        /* Judge hit */
+        if(!checkMarker(markers, 0x005a)){
+            hit_cnt++;
+            if(hit_cnt == 5){
+                hit_flag = true;
+                std::cout << "hit: time is " << time << std::endl;
+            }
+        }else{
+            hit_cnt = 0;
+            hit_flag = false;
+        }
+        time++;
+        if(time > 300)time = 0;
+        std::cout << time << std::endl;
+        
         /* Render here */
-        display(window, img_bgr, markers);
+        display(window, img_bgr, markers, hit_flag);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
