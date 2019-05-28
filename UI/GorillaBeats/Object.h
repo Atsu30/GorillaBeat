@@ -8,19 +8,14 @@
 
 #ifndef Object_h
 #define Object_h
-class Object
-{
-public:
-    virtual void render()
-    {
-        // to be inherited
-    }
-    virtual void ready()
-    {
-        // to be inherited
-    }
-    
+class Object {
+ public:
+  virtual void render() {
+    // to be inherited
+  }
+  virtual void ready() {
+    // to be inherited
+  }
 };
-
 
 #endif /* Object_h */

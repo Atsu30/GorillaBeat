@@ -16,6 +16,7 @@
 		FD46534022987D1000E1E88D /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD46533E22987D1000E1E88D /* Window.cpp */; };
 		FD8CD575229C46A300D3506C /* vertex.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD8CD573229C45E100D3506C /* vertex.vs */; };
 		FD8CD576229C46B100D3506C /* fragment.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD8CD574229C45F000D3506C /* fragment.fs */; };
+		FDBE70BE229C68A200A38953 /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDBE70BC229C68A200A38953 /* Line.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,6 +58,8 @@
 		FD465343229BB54D00E1E88D /* Object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
 		FD8CD573229C45E100D3506C /* vertex.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = vertex.vs; sourceTree = "<group>"; };
 		FD8CD574229C45F000D3506C /* fragment.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = fragment.fs; sourceTree = "<group>"; };
+		FDBE70BC229C68A200A38953 /* Line.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
+		FDBE70BD229C68A200A38953 /* Line.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Line.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,8 @@
 			children = (
 				FD8CD572229C45AD00D3506C /* Shader */,
 				FD3C8FE02296676D0013ED05 /* main.cpp */,
+				FDBE70BC229C68A200A38953 /* Line.cpp */,
+				FDBE70BD229C68A200A38953 /* Line.hpp */,
 				FD46533E22987D1000E1E88D /* Window.cpp */,
 				FD46533F22987D1000E1E88D /* Window.hpp */,
 				FD46533B22985DDF00E1E88D /* Triangle.cpp */,
@@ -185,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD3C8FE12296676D0013ED05 /* main.cpp in Sources */,
+				FDBE70BE229C68A200A38953 /* Line.cpp in Sources */,
 				FD46534022987D1000E1E88D /* Window.cpp in Sources */,
 				FD46533D22985DDF00E1E88D /* Triangle.cpp in Sources */,
 			);

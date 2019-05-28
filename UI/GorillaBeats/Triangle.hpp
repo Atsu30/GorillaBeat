@@ -11,8 +11,6 @@
 #define Triangle_hpp
 
 #include <stdio.h>
-
-
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
@@ -21,28 +19,23 @@
 
 using namespace std;
 
-class Triangle: public Object
-{
-public:
-    Triangle();
-    Triangle(float *v1, float *v2, float *v3);
-    void setColour();
-    // Setters and getters for shaders
-    
-    void ready();
-    void render();
-    
-    
-private:
-    // Position of three vertices
-    float *v1Pos;
-    float *v2Pos;
-    float *v3Pos;
-    float *vertices;
-    void init();
-    unsigned int VBO, VAO;
-    
-    Shader sd;
+class Triangle : public Object {
+ public:
+  Triangle();
+  Triangle(float *v1, float *v2, float *v3);
+  void setColour();
+  // Setters and getters for shaders
+
+  void ready();
+  void render();
+
+ private:
+  // Position of three vertices
+  float *vertices;
+  void init();
+  unsigned int VBO, VAO;
+
+  Shader sd;
 };
 
 #endif /* Triangle_hpp */
