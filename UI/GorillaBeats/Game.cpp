@@ -6,7 +6,7 @@
 //  Copyright © 2019 gb. All rights reserved.
 //
 
-#include "game.hpp"
+#include "Game.hpp"
 
 Game::Game(GLuint width, GLuint height)
 : State(GAME_ACTIVE), Keys(), Width(width), Height(height)

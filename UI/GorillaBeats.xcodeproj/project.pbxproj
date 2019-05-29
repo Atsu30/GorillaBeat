@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B8BCF6E229E612E00D5DC74 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B8BCF6C229E612E00D5DC74 /* game.cpp */; };
+		5B8BCF6E229E612E00D5DC74 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B8BCF6C229E612E00D5DC74 /* Game.cpp */; };
 		FD3C8FE12296676D0013ED05 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD3C8FE02296676D0013ED05 /* main.cpp */; };
 		FD3C8FE9229667B30013ED05 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FE8229667B30013ED05 /* OpenGL.framework */; };
 		FD3C8FED2296683A0013ED05 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FEC2296683A0013ED05 /* libGLEW.2.1.0.dylib */; };
@@ -45,8 +45,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5B8BCF6C229E612E00D5DC74 /* game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
-		5B8BCF6D229E612E00D5DC74 /* game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
+		5B8BCF6C229E612E00D5DC74 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		5B8BCF6D229E612E00D5DC74 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
 		FD2BE5AC229C24D000D84DFA /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		FD3C8FDD2296676C0013ED05 /* GorillaBeats */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GorillaBeats; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD3C8FE02296676D0013ED05 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -114,8 +114,8 @@
 				FD2BE5AC229C24D000D84DFA /* Shader.h */,
 				FD465343229BB54D00E1E88D /* Object.h */,
 				FD3FD424229D327400657C58 /* Rectangle.cpp */,
-				5B8BCF6C229E612E00D5DC74 /* game.cpp */,
-				5B8BCF6D229E612E00D5DC74 /* game.hpp */,
+				5B8BCF6C229E612E00D5DC74 /* Game.cpp */,
+				5B8BCF6D229E612E00D5DC74 /* Game.hpp */,
 				FD3FD425229D327400657C58 /* Rectangle.hpp */,
 			);
 			path = GorillaBeats;
@@ -204,7 +204,7 @@
 				FD46534022987D1000E1E88D /* Window.cpp in Sources */,
 				FD3FD426229D327400657C58 /* Rectangle.cpp in Sources */,
 				FD46533D22985DDF00E1E88D /* Triangle.cpp in Sources */,
-				5B8BCF6E229E612E00D5DC74 /* game.cpp in Sources */,
+				5B8BCF6E229E612E00D5DC74 /* Game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
