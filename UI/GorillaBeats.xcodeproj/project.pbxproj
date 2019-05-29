@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5B8BCF6E229E612E00D5DC74 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B8BCF6C229E612E00D5DC74 /* Game.cpp */; };
+		5B8BCF71229E6B2900D5DC74 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B8BCF6F229E6B2900D5DC74 /* Cube.cpp */; };
+		5B8BCF74229E8D2300D5DC74 /* cube.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5B8BCF72229E7D8200D5DC74 /* cube.vs */; };
+		5B8BCF75229E8D2700D5DC74 /* cube.fs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5B8BCF73229E7D9A00D5DC74 /* cube.fs */; };
 		FD3C8FE12296676D0013ED05 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD3C8FE02296676D0013ED05 /* main.cpp */; };
 		FD3C8FE9229667B30013ED05 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FE8229667B30013ED05 /* OpenGL.framework */; };
 		FD3C8FED2296683A0013ED05 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FEC2296683A0013ED05 /* libGLEW.2.1.0.dylib */; };
@@ -28,6 +31,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				5B8BCF75229E8D2700D5DC74 /* cube.fs in CopyFiles */,
+				5B8BCF74229E8D2300D5DC74 /* cube.vs in CopyFiles */,
 				FD8CD576229C46B100D3506C /* fragment.fs in CopyFiles */,
 				FD8CD575229C46A300D3506C /* vertex.vs in CopyFiles */,
 			);
@@ -47,6 +52,10 @@
 /* Begin PBXFileReference section */
 		5B8BCF6C229E612E00D5DC74 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		5B8BCF6D229E612E00D5DC74 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
+		5B8BCF6F229E6B2900D5DC74 /* Cube.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cube.cpp; sourceTree = "<group>"; };
+		5B8BCF70229E6B2900D5DC74 /* Cube.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Cube.hpp; sourceTree = "<group>"; };
+		5B8BCF72229E7D8200D5DC74 /* cube.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cube.vs; sourceTree = "<group>"; };
+		5B8BCF73229E7D9A00D5DC74 /* cube.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cube.fs; sourceTree = "<group>"; };
 		FD2BE5AC229C24D000D84DFA /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		FD3C8FDD2296676C0013ED05 /* GorillaBeats */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GorillaBeats; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD3C8FE02296676D0013ED05 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -117,6 +126,8 @@
 				5B8BCF6C229E612E00D5DC74 /* Game.cpp */,
 				5B8BCF6D229E612E00D5DC74 /* Game.hpp */,
 				FD3FD425229D327400657C58 /* Rectangle.hpp */,
+				5B8BCF6F229E6B2900D5DC74 /* Cube.cpp */,
+				5B8BCF70229E6B2900D5DC74 /* Cube.hpp */,
 			);
 			path = GorillaBeats;
 			sourceTree = "<group>";
@@ -138,6 +149,8 @@
 			children = (
 				FD8CD573229C45E100D3506C /* vertex.vs */,
 				FD8CD574229C45F000D3506C /* fragment.fs */,
+				5B8BCF72229E7D8200D5DC74 /* cube.vs */,
+				5B8BCF73229E7D9A00D5DC74 /* cube.fs */,
 			);
 			path = Shader;
 			sourceTree = "<group>";
@@ -202,6 +215,7 @@
 				FD3C8FE12296676D0013ED05 /* main.cpp in Sources */,
 				FDBE70BE229C68A200A38953 /* Line.cpp in Sources */,
 				FD46534022987D1000E1E88D /* Window.cpp in Sources */,
+				5B8BCF71229E6B2900D5DC74 /* Cube.cpp in Sources */,
 				FD3FD426229D327400657C58 /* Rectangle.cpp in Sources */,
 				FD46533D22985DDF00E1E88D /* Triangle.cpp in Sources */,
 				5B8BCF6E229E612E00D5DC74 /* Game.cpp in Sources */,
@@ -329,11 +343,14 @@
 				HEADER_SEARCH_PATHS = (
 					"/usr⁩/local⁩/⁨Cellar⁩/⁨glew⁩/⁨2.1.0⁩/⁨include⁩",
 					/usr/local/include,
+					/usr/local/Cellar/glm/0.9.9.5/include,
+					/usr/local/Cellar/glfw/3.3/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.1.0/lib,
 					/usr/local/Cellar/glfw/3.3/lib,
+					/usr/local/Cellar/glm/0.9.9.5/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -346,11 +363,14 @@
 				HEADER_SEARCH_PATHS = (
 					"/usr⁩/local⁩/⁨Cellar⁩/⁨glew⁩/⁨2.1.0⁩/⁨include⁩",
 					/usr/local/include,
+					/usr/local/Cellar/glm/0.9.9.5/include,
+					/usr/local/Cellar/glfw/3.3/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.1.0/lib,
 					/usr/local/Cellar/glfw/3.3/lib,
+					/usr/local/Cellar/glm/0.9.9.5/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
