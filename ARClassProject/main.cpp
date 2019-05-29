@@ -91,7 +91,7 @@ void initGL(int argc, char *argv[])
     glEnable( GL_LIGHT0 );
 }
 
-void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &markers, const bool hit_flag)
+void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &markers)
 {
     //const auto camera_image_size = sizeof(unsigned char) *img_bgr.rows*img_bgr.cols * 3;
     auto background_buffer_size = sizeof(bkgnd);
@@ -163,8 +163,6 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
             resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
     
     glLoadMatrixf( resultTransposedMatrix );
-    
-    // draw Text
     
     
     int key = cv::waitKey (10);
@@ -243,10 +241,6 @@ int main(int argc, char* argv[]) {
     
     std::vector<Marker> markers;
     
-    int hit_cnt = 0;
-    int time = 0;
-    bool hit_flag = false;
-    
     //    float resultMatrix[16];
     
     /* Loop until the user closes the window */
@@ -266,27 +260,12 @@ int main(int argc, char* argv[]) {
         /* Track a marker */
         markerTracker.findMarker( img_bgr, markers);///resultMatrix);
         
-       // std::cout << img_bgr.size() << std::endl;
-//                cv::imshow("img_bgr", img_bgr);
-//                cv::waitKey(10); /// Wait for one sec.
+//        cv::imshow("img_bgr", img_bgr);
+//        cv::waitKey(10); /// Wait for one sec.
         
-        /* Judge hit */
-//        if(!checkMarker(markers, 0x005a)){
-//            hit_cnt++;
-//            if(hit_cnt == 5){
-//                hit_flag = true;
-//                std::cout << "hit: time is " << time << std::endl;
-//            }
-//        }else{
-//            hit_cnt = 0;
-//            hit_flag = false;
-//        }
-//        time++;
-//        if(time > 300)time = 0;
-//        std::cout << time << std::endl;
         
         /* Render here */
-        display(window, img_bgr, markers, hit_flag);
+        display(window, img_bgr, markers);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
