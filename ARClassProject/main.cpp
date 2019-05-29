@@ -156,6 +156,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     //glLoadTransposeMatrixf( resultMatrix );
     glLoadMatrixf( resultTransposedMatrix );
     drawSnowman();
+    //drawCube();
     
     // draw image at the marker(id:0272)
     for (int x=0; x<4; ++x)

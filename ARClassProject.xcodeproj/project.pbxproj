@@ -473,12 +473,14 @@
 					"/usr/local/Cellar/opencv/4.1.0_2/include/**",
 					/usr/local/include/,
 					/usr/local/Cellar/glfw/3.3/include/,
+					/usr/local/Cellar/glm/0.9.9.5/include/,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ARClassProject/Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/opencv/4.1.0_2/lib,
 					/usr/local/Cellar/glfw/3.3/lib,
+					/usr/local/Cellar/glm/0.9.9.5/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
@@ -497,12 +499,14 @@
 					"/usr/local/Cellar/opencv/4.1.0_2/include/**",
 					/usr/local/include/,
 					/usr/local/Cellar/glfw/3.3/include/,
+					/usr/local/Cellar/glm/0.9.9.5/include/,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ARClassProject/Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/opencv/4.1.0_2/lib,
 					/usr/local/Cellar/glfw/3.3/lib,
+					/usr/local/Cellar/glm/0.9.9.5/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (

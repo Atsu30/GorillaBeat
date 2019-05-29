@@ -39,6 +39,8 @@ void drawSphere(double r, int lats, int longs) {
 }
 
 
+
+
 void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks)
 {
 	glBegin(GL_LINE_LOOP);
