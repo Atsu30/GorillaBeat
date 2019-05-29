@@ -46,6 +46,7 @@ int MarkerTracker::subpixSampleSafe ( const cv::Mat &pSrc, const cv::Point2f &p 
 
 // Draw a contour
 void MarkerTracker::drawContour(cv::Mat &image_bgr, const Contour &contour_approx) {
+    
   const bool kIsLineClosed = true;
   const cv::Scalar kEdgeColor(rand() & 255, rand() & 255, rand() & 255);
   const int kThickness = 4;
@@ -105,6 +106,8 @@ void MarkerTracker::cleanup()
 
 void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers )
 {
+  cv::cvtColor(image_bgr, image_bgr, cv::COLOR_BGR2RGB);
+    
   const int image_height = image_bgr.rows;
   const int image_width = image_bgr.cols;
   bool isFirstStripe = true;

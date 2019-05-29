@@ -117,6 +117,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     gluOrtho2D( 0.0, camera_width, 0.0, camera_height );
     
     glRasterPos2i( 0, camera_height-1 );
+    
     glDrawPixels( camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, bkgnd );
     
     glPopMatrix();
@@ -244,7 +245,8 @@ int main(int argc, char* argv[]) {
     
     int hit_cnt = 0;
     int time = 0;
-    bool hit_flag = bool;
+    bool hit_flag = false;
+    
     //    float resultMatrix[16];
     
     /* Loop until the user closes the window */
@@ -269,19 +271,19 @@ int main(int argc, char* argv[]) {
 //                cv::waitKey(10); /// Wait for one sec.
         
         /* Judge hit */
-        if(!checkMarker(markers, 0x005a)){
-            hit_cnt++;
-            if(hit_cnt == 5){
-                hit_flag = true;
-                std::cout << "hit: time is " << time << std::endl;
-            }
-        }else{
-            hit_cnt = 0;
-            hit_flag = false;
-        }
-        time++;
-        if(time > 300)time = 0;
-        std::cout << time << std::endl;
+//        if(!checkMarker(markers, 0x005a)){
+//            hit_cnt++;
+//            if(hit_cnt == 5){
+//                hit_flag = true;
+//                std::cout << "hit: time is " << time << std::endl;
+//            }
+//        }else{
+//            hit_cnt = 0;
+//            hit_flag = false;
+//        }
+//        time++;
+//        if(time > 300)time = 0;
+//        std::cout << time << std::endl;
         
         /* Render here */
         display(window, img_bgr, markers, hit_flag);
