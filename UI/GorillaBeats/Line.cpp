@@ -13,7 +13,9 @@ Line::Line() { init(); }
 Line::Line(float *v1, float *v2) {
   init();
   vertices[0] = v1[0];
-  vertices[1] = v2[1];
+  vertices[1] = v1[1];
+  vertices[2] = v2[0];
+  vertices[3] = v2[1];
 }
 void Line::ready() {
   // setting up VAOs and VBOs
@@ -27,7 +29,7 @@ void Line::ready() {
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4, vertices, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 * sizeof(float), (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
   // note that this is allowed, the call to glVertexAttribPointer registered VBO
@@ -40,6 +42,10 @@ void Line::ready() {
   // VAOs requires a call to glBindVertexArray anyways so we generally don't
   // unbind VAOs (nor VBOs) when it's not directly necessary.
   glBindVertexArray(0);
+  std::cout<<vertices[0]<<std::endl;
+  std::cout<<vertices[1]<<std::endl;
+  std::cout<<vertices[2]<<std::endl;
+  std::cout<<vertices[3]<<std::endl;
 }
 void Line::render() {
   sd.use();
@@ -54,5 +60,6 @@ void Line::render() {
 
 void Line::init() {
   vertices = new float[4]{0.0f, 0.0f, 0.0f, 0.5f};
-  sd = Shader("vertex.vs", "fragment.fs");
+  this->setShaderPath("vertex.vs", "fragment.fs");
+  sd = Shader(this->vertexShaderPath, this->fragmentShaderPath);
 }

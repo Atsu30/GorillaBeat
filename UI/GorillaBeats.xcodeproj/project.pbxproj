@@ -12,6 +12,7 @@
 		FD3C8FED2296683A0013ED05 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FEC2296683A0013ED05 /* libGLEW.2.1.0.dylib */; };
 		FD3C8FEF229668550013ED05 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FEE229668550013ED05 /* libglfw.3.3.dylib */; };
 		FD3C8FF122969A6E0013ED05 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3C8FF022969A6E0013ED05 /* GLUT.framework */; };
+		FD3FD426229D327400657C58 /* Rectangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD3FD424229D327400657C58 /* Rectangle.cpp */; };
 		FD46533D22985DDF00E1E88D /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD46533B22985DDF00E1E88D /* Triangle.cpp */; };
 		FD46534022987D1000E1E88D /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD46533E22987D1000E1E88D /* Window.cpp */; };
 		FD8CD575229C46A300D3506C /* vertex.vs in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD8CD573229C45E100D3506C /* vertex.vs */; };
@@ -51,6 +52,8 @@
 		FD3C8FEC2296683A0013ED05 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = ../../../../../usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
 		FD3C8FEE229668550013ED05 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		FD3C8FF022969A6E0013ED05 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		FD3FD424229D327400657C58 /* Rectangle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Rectangle.cpp; sourceTree = "<group>"; };
+		FD3FD425229D327400657C58 /* Rectangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Rectangle.hpp; sourceTree = "<group>"; };
 		FD46533B22985DDF00E1E88D /* Triangle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cpp; sourceTree = "<group>"; };
 		FD46533C22985DDF00E1E88D /* Triangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Triangle.hpp; sourceTree = "<group>"; };
 		FD46533E22987D1000E1E88D /* Window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
@@ -107,6 +110,8 @@
 				FD46533C22985DDF00E1E88D /* Triangle.hpp */,
 				FD2BE5AC229C24D000D84DFA /* Shader.h */,
 				FD465343229BB54D00E1E88D /* Object.h */,
+				FD3FD424229D327400657C58 /* Rectangle.cpp */,
+				FD3FD425229D327400657C58 /* Rectangle.hpp */,
 			);
 			path = GorillaBeats;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 				FD3C8FE12296676D0013ED05 /* main.cpp in Sources */,
 				FDBE70BE229C68A200A38953 /* Line.cpp in Sources */,
 				FD46534022987D1000E1E88D /* Window.cpp in Sources */,
+				FD3FD426229D327400657C58 /* Rectangle.cpp in Sources */,
 				FD46533D22985DDF00E1E88D /* Triangle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
