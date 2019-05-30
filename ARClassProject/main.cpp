@@ -23,11 +23,14 @@ struct Position { double x,y,z; };
 bool debugmode = false;
 bool balldebug = false;
 
-float resultTransposedMatrix[16];
+float resultTransposedMatrix_player1[16];
+float resultTransposedMatrix_player2[16];
+float resultTransposedMatrix_World[16];
 float snowmanLookVector[4];
 int towards = 0x005A;
 int towardsList[2] = {0x005a, 0x0272};
 int towardscounter = 0;
+
 Ball ball(cv::Point3d(0,0,0));
 
 //camera settings
@@ -142,56 +145,54 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     float resultMatrix_10e2[16]; // Stage(World Coordinate)
     for(int i=0; i<markers.size(); i++){
         const int code =markers[i].code;
+        
+        // fix scale(translate x, y)
+        float scale = 0.2;
+        markers[i].resultMatrix[3] *= scale;
+        markers[i].resultMatrix[7] *= scale;
+        
         if(code == 0x0d22) {
             for(int j=0; j<16; j++)
                 resultMatrix_0d22[j] = markers[i].resultMatrix[j];
+            
+            for (int x=0; x<4; ++x)
+                for (int y=0; y<4; ++y)
+                    resultTransposedMatrix_player1[x*4+y] = resultMatrix_0d22[y*4+x];
+            
         }else if(code == 0x1068){
             for(int j=0; j<16; j++)
                 resultMatrix_1068[j] = markers[i].resultMatrix[j];
+            
+            for (int x=0; x<4; ++x)
+                for (int y=0; y<4; ++y)
+                    resultTransposedMatrix_player2[x*4+y] = resultMatrix_1068[y*4+x];
+            
         }else if(code == 0x10e2){
             for(int j=0; j<16; j++)
                 resultMatrix_10e2[j] = markers[i].resultMatrix[j];
+            
+            for (int x=0; x<4; ++x)
+                for (int y=0; y<4; ++y)
+                    resultTransposedMatrix_World[x*4+y] = resultMatrix_10e2[y*4+x];
         }
+        
     }
     
-    // draw image at the marker(id:0d22)
-    for (int x=0; x<4; ++x)
-        for (int y=0; y<4; ++y)
-            resultTransposedMatrix[x*4+y] = resultMatrix_0d22[y*4+x];
-    
+    // draw player1
     // Fixed tranlate scale
-    float scale = 0.2;
-    resultTransposedMatrix[12] *= scale;
-    resultTransposedMatrix[13] *= scale;
-    
-    //glLoadTransposeMatrixf( resultMatrix );
-    glLoadMatrixf( resultTransposedMatrix );
+    glLoadMatrixf( resultTransposedMatrix_player1 );
     drawCube(0.01, 0.05, 0.01);
     
-    // draw image at the marker(id:1068)
-    for (int x=0; x<4; ++x)
-        for (int y=0; y<4; ++y)
-            resultTransposedMatrix[x*4+y] = resultMatrix_1068[y*4+x];
-
-    resultTransposedMatrix[12] *= scale;
-    resultTransposedMatrix[13] *= scale;
-    
-    glLoadMatrixf( resultTransposedMatrix );
+    // draw player2
+    glLoadMatrixf( resultTransposedMatrix_player2 );
     drawCube(0.01, 0.05, 0.01);
     
-    // World Coordinate(id:10e2)
-    for (int x=0; x<4; ++x)
-        for (int y=0; y<4; ++y)
-            resultTransposedMatrix[x*4+y] = resultMatrix_10e2[y*4+x];
-    
-    resultTransposedMatrix[12] *= scale;
-    resultTransposedMatrix[13] *= scale;
-    
+    // World Coordinate
     // draw ball
     ball.move();
     ball.debug();
     glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix );
+    glLoadMatrixf( resultTransposedMatrix_World );
     glTranslatef((float) ball.pos.x, (float) ball.pos.y + 0.024f, (float) ball.pos.z);
     glColor4f(1,0,0,1);
     drawSphere(0.005, 10, 10);
