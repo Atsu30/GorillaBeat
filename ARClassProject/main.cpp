@@ -15,6 +15,7 @@
 #include "PoseEstimation.h"
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
+#include "Ball.hpp"
 
 
 struct Position { double x,y,z; };
@@ -27,6 +28,7 @@ float snowmanLookVector[4];
 int towards = 0x005A;
 int towardsList[2] = {0x005a, 0x0272};
 int towardscounter = 0;
+Ball ball(cv::Point3d(0,0,0));
 
 //camera settings
 //const int camera_width  = 848;
@@ -135,23 +137,27 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     glMatrixMode( GL_MODELVIEW );
     
     // draw something at marker position
-    float resultMatrix_005A[16];
-    float resultMatrix_0272[16];
+    float resultMatrix_0d22[16]; // Player1
+    float resultMatrix_1068[16]; // Player2
+    float resultMatrix_10e2[16]; // Stage(World Coordinate)
     for(int i=0; i<markers.size(); i++){
         const int code =markers[i].code;
         if(code == 0x0d22) {
             for(int j=0; j<16; j++)
-                resultMatrix_005A[j] = markers[i].resultMatrix[j];
+                resultMatrix_0d22[j] = markers[i].resultMatrix[j];
         }else if(code == 0x1068){
             for(int j=0; j<16; j++)
-                resultMatrix_0272[j] = markers[i].resultMatrix[j];
+                resultMatrix_1068[j] = markers[i].resultMatrix[j];
+        }else if(code == 0x10e2){
+            for(int j=0; j<16; j++)
+                resultMatrix_10e2[j] = markers[i].resultMatrix[j];
         }
     }
     
-    // draw image at the marker(id:005A)
+    // draw image at the marker(id:0d22)
     for (int x=0; x<4; ++x)
         for (int y=0; y<4; ++y)
-            resultTransposedMatrix[x*4+y] = resultMatrix_005A[y*4+x];
+            resultTransposedMatrix[x*4+y] = resultMatrix_0d22[y*4+x];
     
     // Fixed tranlate scale
     float scale = 0.2;
@@ -162,16 +168,33 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     glLoadMatrixf( resultTransposedMatrix );
     drawCube(0.01, 0.05, 0.01);
     
-    // draw image at the marker(id:0272)
+    // draw image at the marker(id:1068)
     for (int x=0; x<4; ++x)
         for (int y=0; y<4; ++y)
-            resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
+            resultTransposedMatrix[x*4+y] = resultMatrix_1068[y*4+x];
 
     resultTransposedMatrix[12] *= scale;
     resultTransposedMatrix[13] *= scale;
     
     glLoadMatrixf( resultTransposedMatrix );
     drawCube(0.01, 0.05, 0.01);
+    
+    // World Coordinate(id:10e2)
+    for (int x=0; x<4; ++x)
+        for (int y=0; y<4; ++y)
+            resultTransposedMatrix[x*4+y] = resultMatrix_10e2[y*4+x];
+    
+    resultTransposedMatrix[12] *= scale;
+    resultTransposedMatrix[13] *= scale;
+    
+    // draw ball
+    ball.move();
+    ball.debug();
+    glLoadIdentity();
+    glLoadMatrixf( resultTransposedMatrix );
+    glTranslatef((float) ball.pos.x, (float) ball.pos.y + 0.024f, (float) ball.pos.z);
+    glColor4f(1,0,0,1);
+    drawSphere(0.005, 10, 10);
     
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
@@ -246,8 +269,10 @@ int main(int argc, char* argv[]) {
     InitializeVideoStream(cap);
     const double kMarkerSize = 0.1;// 0.03; // [m]
     MarkerTracker markerTracker(kMarkerSize);
-    
     std::vector<Marker> markers;
+    
+    // set ball
+    ball = Ball(cv::Point3d(0,0,0));
     
     //    float resultMatrix[16];
     

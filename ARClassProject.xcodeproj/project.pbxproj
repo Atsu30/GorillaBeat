@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D0DD026229FE07C00CE4593 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D0DD024229FE07C00CE4593 /* Ball.cpp */; };
 		5D69EE58229BB1E90006542A /* Info.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5D69EE57229BAFD30006542A /* Info.plist */; };
 		5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC04812229BC42B005BB094 /* PoseEstimation.cpp */; };
 		5DC04817229BC7A9005BB094 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC04816229BC7A9005BB094 /* OpenGL.framework */; };
@@ -77,6 +78,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D0DD024229FE07C00CE4593 /* Ball.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ball.cpp; sourceTree = "<group>"; };
+		5D0DD025229FE07C00CE4593 /* Ball.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ball.hpp; sourceTree = "<group>"; };
 		5D69EE57229BAFD30006542A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DC0480F229BC40E005BB094 /* MarkerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerTracker.h; sourceTree = "<group>"; };
 		5DC04812229BC42B005BB094 /* PoseEstimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoseEstimation.cpp; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 			isa = PBXGroup;
 			children = (
 				5DC744502296639900771726 /* main.cpp */,
+				5D0DD024229FE07C00CE4593 /* Ball.cpp */,
+				5D0DD025229FE07C00CE4593 /* Ball.hpp */,
 				5D69EE57229BAFD30006542A /* Info.plist */,
 				5DC0480F229BC40E005BB094 /* MarkerTracker.h */,
 				FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */,
@@ -342,6 +347,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D0DD026229FE07C00CE4593 /* Ball.cpp in Sources */,
 				5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */,
 				5DC744512296639900771726 /* main.cpp in Sources */,
 				FD3FD423229D0E6D00657C58 /* MarkerTracker.cpp in Sources */,
