@@ -29,8 +29,13 @@ int towardsList[2] = {0x005a, 0x0272};
 int towardscounter = 0;
 
 //camera settings
-const int camera_width  = 848;
-const int camera_height = 480;
+//const int camera_width  = 848;
+//const int camera_height = 480;
+const int camera_width  = 1920;
+const int camera_height = 1080;
+
+
+
 //const int virtual_camera_angle = 30;
 
 unsigned char bkgnd[camera_width*camera_height*3];
@@ -134,10 +139,10 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     float resultMatrix_0272[16];
     for(int i=0; i<markers.size(); i++){
         const int code =markers[i].code;
-        if(code == 0x005a) {
+        if(code == 0x0d22) {
             for(int j=0; j<16; j++)
                 resultMatrix_005A[j] = markers[i].resultMatrix[j];
-        }else if(code == 0x0272){
+        }else if(code == 0x1068){
             for(int j=0; j<16; j++)
                 resultMatrix_0272[j] = markers[i].resultMatrix[j];
         }
@@ -149,22 +154,24 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
             resultTransposedMatrix[x*4+y] = resultMatrix_005A[y*4+x];
     
     // Fixed tranlate scale
-    float scale = 0.5;
+    float scale = 0.2;
     resultTransposedMatrix[12] *= scale;
     resultTransposedMatrix[13] *= scale;
     
     //glLoadTransposeMatrixf( resultMatrix );
     glLoadMatrixf( resultTransposedMatrix );
-    drawSnowman();
-    //drawCube();
+    drawCube(0.01, 0.05, 0.01);
     
     // draw image at the marker(id:0272)
     for (int x=0; x<4; ++x)
         for (int y=0; y<4; ++y)
             resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
+
+    resultTransposedMatrix[12] *= scale;
+    resultTransposedMatrix[13] *= scale;
     
     glLoadMatrixf( resultTransposedMatrix );
-    
+    drawCube(0.01, 0.05, 0.01);
     
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
@@ -237,7 +244,7 @@ int main(int argc, char* argv[]) {
     // setup OpenCV
     cv::Mat img_bgr;
     InitializeVideoStream(cap);
-    const double kMarkerSize = 0.08;// 0.03; // [m]
+    const double kMarkerSize = 0.1;// 0.03; // [m]
     MarkerTracker markerTracker(kMarkerSize);
     
     std::vector<Marker> markers;
@@ -260,7 +267,12 @@ int main(int argc, char* argv[]) {
         
         /* Track a marker */
         markerTracker.findMarker( img_bgr, markers);///resultMatrix);
+        for (int i=0; i<markers.size(); i++) {
+            std::cout << std::hex << markers[i].code << std::endl;
+        }
+        std::cout << std::endl;
         
+//        std::cout << img_bgr.size() << std::endl;
 //        cv::imshow("img_bgr", img_bgr);
 //        cv::waitKey(10); /// Wait for one sec.
         

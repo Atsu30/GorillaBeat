@@ -106,8 +106,6 @@ void MarkerTracker::cleanup()
 
 void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers )
 {
-  cv::cvtColor(image_bgr, image_bgr, cv::COLOR_BGR2RGB);
-    
   const int image_height = image_bgr.rows;
   const int image_width = image_bgr.cols;
   bool isFirstStripe = true;
@@ -394,7 +392,8 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
     cv::warpPerspective(image_gray, iplMarker, projMat, cv::Size(6, 6));
     
     
-    const int bw_thresh = 55;
+//    const int bw_thresh = 55;
+    const int bw_thresh = 100;
     cv::threshold(iplMarker, iplMarker, bw_thresh, 255, cv::THRESH_BINARY);
     //now we have a B/W image of a supposed Marker
     
@@ -536,4 +535,5 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
   //if (key == 27) exit(0);
   
   //  glutPostRedisplay();
+  cv::cvtColor(image_bgr, image_bgr, cv::COLOR_BGR2RGB);
 }
