@@ -38,6 +38,49 @@ void drawSphere(double r, int lats, int longs) {
 	}
 }
 
+void drawCube(double width, double height, double length) {
+    // キューブの頂点情報。
+    static const GLdouble aCubeVertex[][3] = {
+        { -width/2, -height/2, -length/2 },
+        { width/2, -height/2, -length/2 },
+        { width/2, height/2, -length/2 },
+        { -width/2, height/2, -length/2 },
+        { -width/2, -height/2, length/2 },
+        { width/2, -height/2, length/2 },
+        { width/2, height/2, length/2 },
+        { -width/2, height/2, length/2 }
+    };
+    // キューブの面。
+    static const int aCubeFace[][4] = {
+        { 0, 1, 2, 3 },
+        { 1, 5, 6, 2 },
+        { 5, 4, 7, 6 },
+        { 4, 0, 3, 7 },
+        { 4, 5, 1, 0 },
+        { 3, 2, 6, 7 }
+    };
+    // キューブに対する法線ベクトル。
+    static const GLdouble aCubeNormal[][3] = {
+        { 0.0, 0.0,-1.0 },
+        { 1.0, 0.0, 0.0 },
+        { 0.0, 0.0, 1.0 },
+        {-1.0, 0.0, 0.0 },
+        { 0.0,-1.0, 0.0 },
+        { 0.0, 1.0, 0.0 }
+    };
+    
+    glBegin( GL_QUADS );
+    for (size_t i = 0; i < 6; ++i)
+    {
+        glNormal3dv( aCubeNormal[i] );// 法線ベクトルをキューブに当てる。
+        for (size_t j = 0; j < 4; ++j)
+        {
+            glVertex3dv( aCubeVertex[ aCubeFace[i][j] ] );
+        }
+    }
+    glEnd();
+}
+
 
 
 
