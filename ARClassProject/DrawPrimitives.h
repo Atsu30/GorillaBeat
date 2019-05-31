@@ -40,7 +40,7 @@ void drawSphere(double r, int lats, int longs) {
 
 void drawCube(double width, double height, double length) {
     // キューブの頂点情報。
-    static const GLdouble aCubeVertex[][3] = {
+    GLdouble aCubeVertex[][3] = {
         { -width/2, -height/2, -length/2 },
         { width/2, -height/2, -length/2 },
         { width/2, height/2, -length/2 },
@@ -51,7 +51,7 @@ void drawCube(double width, double height, double length) {
         { -width/2, height/2, length/2 }
     };
     // キューブの面。
-    static const int aCubeFace[][4] = {
+    int aCubeFace[][4] = {
         { 0, 1, 2, 3 },
         { 1, 5, 6, 2 },
         { 5, 4, 7, 6 },
@@ -60,7 +60,7 @@ void drawCube(double width, double height, double length) {
         { 3, 2, 6, 7 }
     };
     // キューブに対する法線ベクトル。
-    static const GLdouble aCubeNormal[][3] = {
+    GLdouble aCubeNormal[][3] = {
         { 0.0, 0.0,-1.0 },
         { 1.0, 0.0, 0.0 },
         { 0.0, 0.0, 1.0 },

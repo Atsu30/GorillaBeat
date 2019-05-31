@@ -182,7 +182,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     // draw player2
     glLoadMatrixf( resultTransposedMatrix_player2 );
-    drawCube(0.01, 0.05, 0.01);
+    drawCube(0.01, 0.01, 0.01);
     
     // World Coordinate
     // draw ball
