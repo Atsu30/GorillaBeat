@@ -33,17 +33,16 @@ int towardscounter = 0;
 
 Ball ball(cv::Point3d(0,0,0));
 
-//camera settings
-//const int camera_width  = 848;
-//const int camera_height = 480;
-const int camera_width  = 1920;
-const int camera_height = 1080;
+int camera_width;
+int camera_height;
 
-
+const int code_player1 = 0x0b44;
+const int code_player2 = 0x1228;
+const int code_world = 0x1c44;
 
 //const int virtual_camera_angle = 30;
 
-unsigned char bkgnd[camera_width*camera_height*3];
+
 
 void InitializeVideoStream( cv::VideoCapture &camera ) {
     if( camera.isOpened() )
@@ -104,8 +103,6 @@ void initGL(int argc, char *argv[])
 void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &markers)
 {
     //const auto camera_image_size = sizeof(unsigned char) *img_bgr.rows*img_bgr.cols * 3;
-    auto background_buffer_size = sizeof(bkgnd);
-    memcpy(bkgnd, img_bgr.data, background_buffer_size);
     
     int width0, height0;
     glfwGetFramebufferSize(window, &width0, &height0);
@@ -128,7 +125,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     glRasterPos2i( 0, camera_height-1 );
     
-    glDrawPixels( camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, bkgnd );
+    glDrawPixels( camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, img_bgr.data );
     
     glPopMatrix();
     
@@ -147,19 +144,19 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
         const int code =markers[i].code;
         
         // fix scale(translate x, y)
-        float scale = 0.2;
+        float scale = 0.4;
         markers[i].resultMatrix[3] *= scale;
         markers[i].resultMatrix[7] *= scale;
         
-        if(code == 0x0d22) {
+        if(code == code_player1) {
             for(int j=0; j<16; j++)
                 resultMatrix_0d22[j] = markers[i].resultMatrix[j];
             
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_player1[x*4+y] = resultMatrix_0d22[y*4+x];
-            
-        }else if(code == 0x1068){
+        
+        }else if(code == code_player2){
             for(int j=0; j<16; j++)
                 resultMatrix_1068[j] = markers[i].resultMatrix[j];
             
@@ -167,7 +164,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_player2[x*4+y] = resultMatrix_1068[y*4+x];
             
-        }else if(code == 0x10e2){
+        }else if(code == code_world){
             for(int j=0; j<16; j++)
                 resultMatrix_10e2[j] = markers[i].resultMatrix[j];
             
@@ -189,6 +186,8 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     // World Coordinate
     // draw ball
+//    Position player1_camera(resultTransposedMatrix_player1[
+    
     ball.move();
     ball.debug();
     glLoadIdentity();
@@ -237,6 +236,23 @@ int main(int argc, char* argv[]) {
     if (!glfwInit())
         return -1;
     
+    /* Initialize Camera Size */
+    cv::Mat img_bgr;
+    InitializeVideoStream(cap);
+    while(true){
+        cap >> img_bgr;
+        if(img_bgr.empty()){
+            std::cout << "Could not query frame. Trying to reinitialize." << std::endl;
+            InitializeVideoStream(cap);
+            cv::waitKey(1000); /// Wait for one sec.
+            continue;
+        }else{
+            break;
+        }
+    }
+    camera_width = img_bgr.cols;
+    camera_height = img_bgr.rows;
+    
     
     // initialize the window system
     /* Create a windowed mode window and its OpenGL context */
@@ -266,8 +282,6 @@ int main(int argc, char* argv[]) {
     initGL(argc, argv);
     
     // setup OpenCV
-    cv::Mat img_bgr;
-    InitializeVideoStream(cap);
     const double kMarkerSize = 0.1;// 0.03; // [m]
     MarkerTracker markerTracker(kMarkerSize);
     std::vector<Marker> markers;
@@ -293,6 +307,8 @@ int main(int argc, char* argv[]) {
         
         /* Track a marker */
         markerTracker.findMarker( img_bgr, markers);///resultMatrix);
+        
+        /* debug marker code */
         for (int i=0; i<markers.size(); i++) {
             std::cout << std::hex << markers[i].code << std::endl;
         }
