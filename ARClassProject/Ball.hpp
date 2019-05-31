@@ -24,7 +24,10 @@ public:
         vec = cv::Vec3d(1, 1, 1);
         dt = 0.001;
     }
-
+    
+    void setVec(cv::Vec3f new_vec){
+        vec = new_vec;
+    };
     void move();
     void debug();
 };

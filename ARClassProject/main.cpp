@@ -137,9 +137,9 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     glMatrixMode( GL_MODELVIEW );
     
     // draw something at marker position
-    float resultMatrix_0d22[16]; // Player1
-    float resultMatrix_1068[16]; // Player2
-    float resultMatrix_10e2[16]; // Stage(World Coordinate)
+    float resultMatrix_player1[16]; // Player1
+    float resultMatrix_player2[16]; // Player2
+    float resultMatrix_world[16]; // Stage(World Coordinate)
     for(int i=0; i<markers.size(); i++){
         const int code =markers[i].code;
         
@@ -150,27 +150,27 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
         
         if(code == code_player1) {
             for(int j=0; j<16; j++)
-                resultMatrix_0d22[j] = markers[i].resultMatrix[j];
+                resultMatrix_player1[j] = markers[i].resultMatrix[j];
             
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_player1[x*4+y] = resultMatrix_0d22[y*4+x];
+                    resultTransposedMatrix_player1[x*4+y] = resultMatrix_player1[y*4+x];
         
         }else if(code == code_player2){
             for(int j=0; j<16; j++)
-                resultMatrix_1068[j] = markers[i].resultMatrix[j];
+                resultMatrix_player2[j] = markers[i].resultMatrix[j];
             
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_player2[x*4+y] = resultMatrix_1068[y*4+x];
+                    resultTransposedMatrix_player2[x*4+y] = resultMatrix_player2[y*4+x];
             
         }else if(code == code_world){
             for(int j=0; j<16; j++)
-                resultMatrix_10e2[j] = markers[i].resultMatrix[j];
+                resultMatrix_world[j] = markers[i].resultMatrix[j];
             
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_World[x*4+y] = resultMatrix_10e2[y*4+x];
+                    resultTransposedMatrix_World[x*4+y] = resultMatrix_world[y*4+x];
         }
         
     }
@@ -182,7 +182,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     
     // draw player2
     glLoadMatrixf( resultTransposedMatrix_player2 );
-    drawCube(0.01, 0.01, 0.01);
+    drawCube(0.01, 0.05, 0.01);
     
     // World Coordinate
     // draw ball
