@@ -17,15 +17,12 @@
 #include "DrawPrimitives.h"
 #include "Ball.hpp"
 
-
-struct Position { double x,y,z; };
-
 bool debugmode = false;
 bool balldebug = false;
 
 float resultTransposedMatrix_player1[16];
 float resultTransposedMatrix_player2[16];
-float resultTransposedMatrix_World[16];
+float resultTransposedMatrix_world[16];
 float snowmanLookVector[4];
 int towards = 0x005A;
 int towardsList[2] = {0x005a, 0x0272};
@@ -59,15 +56,31 @@ void InitializeVideoStream( cv::VideoCapture &camera ) {
     }
 }
 
-void multMatrix(float mat[16], float vec[4])
-{
-    for(int i=0; i<4; i++)
-    {
-        snowmanLookVector[i] = 0;
-        for(int j=0; j<4; j++)
-            snowmanLookVector[i] += mat[4*i + j] * vec[j];
+cv::Mat arrayToMat(float* matrix){
+    return cv::Mat(4, 4, CV_32FC1, matrix);
+}
+
+void MatToArray(cv::Mat1f matrix, float* mat_array){
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            mat_array[i*4 + j] = matrix(i,j);
+        }
     }
 }
+
+cv::Point3d getPosInWorld(float* resultTransposedMatrix_object, float* resultTransposedMatrix_world){
+    cv::Mat Mat_object = arrayToMat(resultTransposedMatrix_object).t();
+    cv::Mat Mat_world = arrayToMat(resultTransposedMatrix_world).t();
+    
+    cv::Mat Mat_world_inv = Mat_world.inv();
+    cv::Mat object_pos_mat = Mat_world.inv() * Mat_object;
+    
+    cv::Point3d object_pos(object_pos_mat.at<float>(0,3), object_pos_mat.at<float>(1,3), object_pos_mat.at<float>(2,3));
+    
+    return object_pos;
+}
+
+
 
 /* program & OpenGL initialization */
 void initGL(int argc, char *argv[])
@@ -170,29 +183,44 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
             
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_World[x*4+y] = resultMatrix_world[y*4+x];
+                    resultTransposedMatrix_world[x*4+y] = resultMatrix_world[y*4+x];
         }
-        
     }
     
     // draw player1
     // Fixed tranlate scale
     glLoadMatrixf( resultTransposedMatrix_player1 );
-    drawCube(0.01, 0.05, 0.01);
+    //drawCube(0.01, 0.05, 0.01);
     
     // draw player2
     glLoadMatrixf( resultTransposedMatrix_player2 );
     drawCube(0.01, 0.05, 0.01);
     
-    // World Coordinate
-    // draw ball
-//    Position player1_camera(resultTransposedMatrix_player1[
-    
-    ball.move();
-    ball.debug();
+    // world origin
     glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix_World );
-    glTranslatef((float) ball.pos.x, (float) ball.pos.y + 0.024f, (float) ball.pos.z);
+    glLoadMatrixf( resultTransposedMatrix_world );
+    glColor4f(0,1,0,1);
+    drawSphere(0.005, 10, 10);
+    // x axis
+    glColor4f(1, 0, 0, 1);
+    drawLine(-10, 0, 0, 10, 0, 0);
+    // y axis
+    glColor4f(0, 1, 0, 1);
+    drawLine(0, -10, 0, 0, 10, 0);
+    // z axis
+    glColor4f( 0, 0, 1, 1);
+    drawLine(0, 0, -10, 0, 0, 10);
+    
+    // draw ball
+    // calc player position in world coordinate
+    cv::Point3d player1_pos = getPosInWorld(resultTransposedMatrix_player1, resultTransposedMatrix_world);
+    //ball.move();
+    //ball.debug();
+    ball.setPos(player1_pos);
+    
+    glLoadIdentity();
+    glLoadMatrixf( resultTransposedMatrix_world );
+    glTranslatef((float) ball.pos.x, (float) ball.pos.y, 0);
     glColor4f(1,0,0,1);
     drawSphere(0.005, 10, 10);
     

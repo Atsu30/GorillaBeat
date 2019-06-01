@@ -25,9 +25,13 @@ public:
         dt = 0.001;
     }
     
+    void setPos(cv::Point3f new_pos){
+        pos = new_pos;
+    }
+    
     void setVec(cv::Vec3f new_vec){
         vec = new_vec;
-    };
+    }
     void move();
     void debug();
 };
