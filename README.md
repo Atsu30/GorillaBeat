@@ -25,7 +25,7 @@ Make sure your version is correct.
 - Bomb: if shooting on a bomb, the player will lose the game.
 - Border: Define the play area. 
 
-## Need to be done:
+## Need to be done
 
 - Bar player: interaction with AR, moving and rotation
 - Bullet: shooting 
