@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PoseEstimation_hpp
+#define PoseEstimation_hpp
+
 #include <opencv2/core.hpp>
 
 
@@ -20,3 +22,5 @@ void estimateSquarePose( float* result, const cv::Point2f* p2D_, float markerSiz
  * @param quadrangle the coordinates of the corners counter-clockwise
  */
 void calcHomography( float* pResult, const  cv::Point2f* pQuad );
+
+#endif /* PoseEstimation_hpp */

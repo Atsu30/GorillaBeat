@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5D0DD026229FE07C00CE4593 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D0DD024229FE07C00CE4593 /* Ball.cpp */; };
+		5D2BF2FC22A2612E009FE4E3 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BF2FA22A2612E009FE4E3 /* Object.cpp */; };
+		5D2BF2FF22A26665009FE4E3 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BF2FD22A26665009FE4E3 /* Player.cpp */; };
 		5D69EE58229BB1E90006542A /* Info.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5D69EE57229BAFD30006542A /* Info.plist */; };
+		5DA97D8C22A3CCFE00BD70AA /* DrawPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DA97D8B22A3CCFE00BD70AA /* DrawPrimitives.cpp */; };
 		5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DC04812229BC42B005BB094 /* PoseEstimation.cpp */; };
 		5DC04817229BC7A9005BB094 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC04816229BC7A9005BB094 /* OpenGL.framework */; };
 		5DC04819229BC819005BB094 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC04818229BC819005BB094 /* libglfw.3.3.dylib */; };
@@ -80,7 +83,12 @@
 /* Begin PBXFileReference section */
 		5D0DD024229FE07C00CE4593 /* Ball.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ball.cpp; sourceTree = "<group>"; };
 		5D0DD025229FE07C00CE4593 /* Ball.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ball.hpp; sourceTree = "<group>"; };
+		5D2BF2FA22A2612E009FE4E3 /* Object.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
+		5D2BF2FB22A2612E009FE4E3 /* Object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
+		5D2BF2FD22A26665009FE4E3 /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		5D2BF2FE22A26665009FE4E3 /* Player.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Player.hpp; sourceTree = "<group>"; };
 		5D69EE57229BAFD30006542A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DA97D8B22A3CCFE00BD70AA /* DrawPrimitives.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawPrimitives.cpp; sourceTree = "<group>"; };
 		5DC0480F229BC40E005BB094 /* MarkerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerTracker.h; sourceTree = "<group>"; };
 		5DC04812229BC42B005BB094 /* PoseEstimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PoseEstimation.cpp; sourceTree = "<group>"; };
 		5DC04814229BC432005BB094 /* PoseEstimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PoseEstimation.h; sourceTree = "<group>"; };
@@ -224,12 +232,17 @@
 				5DC744502296639900771726 /* main.cpp */,
 				5D0DD024229FE07C00CE4593 /* Ball.cpp */,
 				5D0DD025229FE07C00CE4593 /* Ball.hpp */,
+				5D2BF2FA22A2612E009FE4E3 /* Object.cpp */,
+				5D2BF2FB22A2612E009FE4E3 /* Object.hpp */,
+				5D2BF2FD22A26665009FE4E3 /* Player.cpp */,
+				5D2BF2FE22A26665009FE4E3 /* Player.hpp */,
 				5D69EE57229BAFD30006542A /* Info.plist */,
 				5DC0480F229BC40E005BB094 /* MarkerTracker.h */,
 				FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */,
 				5DC04814229BC432005BB094 /* PoseEstimation.h */,
 				5DC04812229BC42B005BB094 /* PoseEstimation.cpp */,
 				5DC04815229BC43B005BB094 /* DrawPrimitives.h */,
+				5DA97D8B22A3CCFE00BD70AA /* DrawPrimitives.cpp */,
 			);
 			path = ARClassProject;
 			sourceTree = "<group>";
@@ -349,7 +362,10 @@
 			files = (
 				5D0DD026229FE07C00CE4593 /* Ball.cpp in Sources */,
 				5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */,
+				5D2BF2FF22A26665009FE4E3 /* Player.cpp in Sources */,
 				5DC744512296639900771726 /* main.cpp in Sources */,
+				5D2BF2FC22A2612E009FE4E3 /* Object.cpp in Sources */,
+				5DA97D8C22A3CCFE00BD70AA /* DrawPrimitives.cpp in Sources */,
 				FD3FD423229D0E6D00657C58 /* MarkerTracker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

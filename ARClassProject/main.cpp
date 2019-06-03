@@ -1,7 +1,5 @@
-
 #define GLFW_INCLUDE_GLU
 #define GL_SILENCE_DEPRECATION
-
 #include <GLFW/glfw3.h>
  //#include <GL/glew.h>
 
@@ -11,13 +9,13 @@
 #include <opencv2/imgproc.hpp> // include image processing headers
 #include <opencv2/highgui.hpp> // include GUI-related headers
 
-
-#include "PoseEstimation.h"
 #include "MarkerTracker.h"
-#include "DrawPrimitives.h"
 #include "Ball.hpp"
+#include "Player.hpp"
+#include "DrawPrimitives.h"
+#include "Object.hpp"
 
-bool debugmode = false;
+bool debugmode = true;
 bool balldebug = false;
 
 float resultTransposedMatrix_player1[16];
@@ -27,8 +25,6 @@ float snowmanLookVector[4];
 int towards = 0x005A;
 int towardsList[2] = {0x005a, 0x0272};
 int towardscounter = 0;
-
-Ball ball(cv::Point3d(0,0,0));
 
 int camera_width;
 int camera_height;
@@ -68,14 +64,14 @@ void MatToArray(cv::Mat1f matrix, float* mat_array){
     }
 }
 
-cv::Point3d getPosInWorld(float* resultTransposedMatrix_object, float* resultTransposedMatrix_world){
+cv::Point3f getPosInWorld(float* resultTransposedMatrix_object, float* resultTransposedMatrix_world){
     cv::Mat Mat_object = arrayToMat(resultTransposedMatrix_object).t();
     cv::Mat Mat_world = arrayToMat(resultTransposedMatrix_world).t();
     
     cv::Mat Mat_world_inv = Mat_world.inv();
     cv::Mat object_pos_mat = Mat_world.inv() * Mat_object;
     
-    cv::Point3d object_pos(object_pos_mat.at<float>(0,3), object_pos_mat.at<float>(1,3), object_pos_mat.at<float>(2,3));
+    cv::Point3f object_pos(object_pos_mat.at<float>(0,3), object_pos_mat.at<float>(1,3), object_pos_mat.at<float>(2,3));
     
     return object_pos;
 }
@@ -113,46 +109,9 @@ void initGL(int argc, char *argv[])
     glEnable( GL_LIGHT0 );
 }
 
-void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &markers)
-{
-    //const auto camera_image_size = sizeof(unsigned char) *img_bgr.rows*img_bgr.cols * 3;
+void update(std::vector<Marker> &markers, std::vector<Object*>& objects, Player& player1, Player& player2){
     
-    int width0, height0;
-    glfwGetFramebufferSize(window, &width0, &height0);
-    
-    //reshape(window, width, height);
-    
-    // clear buffers
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    
-    // draw background image
-    glDisable( GL_DEPTH_TEST );
-    
-    glMatrixMode( GL_PROJECTION );
-    glPushMatrix();
-    glLoadIdentity();
-    gluOrtho2D( 0.0, camera_width, 0.0, camera_height );
-    
-    glRasterPos2i( 0, camera_height-1 );
-    
-    glDrawPixels( camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, img_bgr.data );
-    
-    glPopMatrix();
-    
-    glEnable(GL_DEPTH_TEST);
-    
-    //    return;
-    
-    // move to marker-position
-    glMatrixMode( GL_MODELVIEW );
-    
-    // draw something at marker position
-    float resultMatrix_player1[16]; // Player1
-    float resultMatrix_player2[16]; // Player2
-    float resultMatrix_world[16]; // Stage(World Coordinate)
+    // update position
     for(int i=0; i<markers.size(); i++){
         const int code =markers[i].code;
         
@@ -162,68 +121,93 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
         markers[i].resultMatrix[7] *= scale;
         
         if(code == code_player1) {
-            for(int j=0; j<16; j++)
-                resultMatrix_player1[j] = markers[i].resultMatrix[j];
             
+            // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_player1[x*4+y] = resultMatrix_player1[y*4+x];
-        
+                    resultTransposedMatrix_player1[x*4+y] = markers[i].resultMatrix[y*4+x];
+            
+            // change the coordinate to the world coordinate
+            cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player1, resultTransposedMatrix_world);
+            
+            player1.setPos(pos);
+            std::cout << "main player1 pos:" << player1.pos << std::endl;
+            
         }else if(code == code_player2){
-            for(int j=0; j<16; j++)
-                resultMatrix_player2[j] = markers[i].resultMatrix[j];
             
+            // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_player2[x*4+y] = resultMatrix_player2[y*4+x];
+                    resultTransposedMatrix_player2[x*4+y] = markers[i].resultMatrix[y*4+x];
+            
+            // change the coordinate to the world coordinate
+            cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player2, resultTransposedMatrix_world);
+            
+            player2.setPos(pos);
             
         }else if(code == code_world){
-            for(int j=0; j<16; j++)
-                resultMatrix_world[j] = markers[i].resultMatrix[j];
             
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
-                    resultTransposedMatrix_world[x*4+y] = resultMatrix_world[y*4+x];
+                    resultTransposedMatrix_world[x*4+y] = markers[i].resultMatrix[y*4+x];
         }
     }
     
-    // draw player1
-    // Fixed tranlate scale
-    glLoadMatrixf( resultTransposedMatrix_player1 );
-    //drawCube(0.01, 0.05, 0.01);
-    
-    // draw player2
-    glLoadMatrixf( resultTransposedMatrix_player2 );
-    drawCube(0.01, 0.05, 0.01);
-    
-    // world origin
+    // move obj according to the velocity
+    for(Object* obj : objects){
+        obj->move();
+    }
+}
+
+void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player player1, Player player2){
+
+    // clear buffers
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix_world );
-    glColor4f(0,1,0,1);
-    drawSphere(0.005, 10, 10);
-    // x axis
-    glColor4f(1, 0, 0, 1);
-    drawLine(-10, 0, 0, 10, 0, 0);
-    // y axis
-    glColor4f(0, 1, 0, 1);
-    drawLine(0, -10, 0, 0, 10, 0);
-    // z axis
-    glColor4f( 0, 0, 1, 1);
-    drawLine(0, 0, -10, 0, 0, 10);
+    
+    // draw background image
+    glDisable( GL_DEPTH_TEST );
+    glMatrixMode( GL_PROJECTION );
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D( 0.0, camera_width, 0.0, camera_height );
+    glRasterPos2i( 0, camera_height-1 );
+    glDrawPixels( camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, img_bgr.data );
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
+    
+    // move to marker-position
+    glMatrixMode( GL_MODELVIEW );
+    
+    // draw debug objects
+    if(debugmode){
+        // draw world axis
+        glLoadIdentity();
+        glLoadMatrixf( resultTransposedMatrix_world );
+        // x axis
+        glColor4f(1, 0, 0, 1);
+        drawLine(-10, 0, 0, 10, 0, 0);
+        // y axis
+        glColor4f(0, 1, 0, 1);
+        drawLine(0, -10, 0, 0, 10, 0);
+        // z axis
+        glColor4f( 0, 0, 1, 1);
+        drawLine(0, 0, -10, 0, 0, 10);
+    }
+    
+    // draw player
+    player1.draw(resultTransposedMatrix_world);
+    player2.draw(resultTransposedMatrix_world);
+
+
+    //shootBall(1);
     
     // draw ball
-    // calc player position in world coordinate
-    cv::Point3d player1_pos = getPosInWorld(resultTransposedMatrix_player1, resultTransposedMatrix_world);
-    //ball.move();
-    //ball.debug();
-    ball.setPos(player1_pos);
-    
-    glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix_world );
-    glTranslatef((float) ball.pos.x, (float) ball.pos.y, 0);
-    glColor4f(1,0,0,1);
-    drawSphere(0.005, 10, 10);
-    
+    for(Object* obj : objects){
+        obj->draw(resultTransposedMatrix_world);
+    }
+
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
     else if (key == 100) debugmode = !debugmode;
@@ -314,8 +298,10 @@ int main(int argc, char* argv[]) {
     MarkerTracker markerTracker(kMarkerSize);
     std::vector<Marker> markers;
     
-    // set ball
-    ball = Ball(cv::Point3d(0,0,0));
+    // set object
+    std::vector<Object*> objects;
+    Player player1(cv::Point3f(10,10,10), cv::Vec3f(0,0,0));
+    Player player2(cv::Point3f(10,10,10), cv::Vec3f(0,0,0));
     
     //    float resultMatrix[16];
     
@@ -346,9 +332,11 @@ int main(int argc, char* argv[]) {
 //        cv::imshow("img_bgr", img_bgr);
 //        cv::waitKey(10); /// Wait for one sec.
         
+        /* Update objects position */
+        update(markers, objects, player1, player2);
         
         /* Render here */
-        display(window, img_bgr, markers);
+        display(img_bgr, objects, player1, player2);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

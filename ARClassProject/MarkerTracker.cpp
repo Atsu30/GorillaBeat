@@ -84,7 +84,6 @@ void MarkerTracker::init()
 #endif
   cv::resizeWindow("Marker", 120, 120 );
   
-  int max = 255;
   int slider_value = 100;
   cv::createTrackbar( "Threshold", kWinName2, &slider_value, 255, trackbarHandler, &slider_value);
   
