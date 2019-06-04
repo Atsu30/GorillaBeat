@@ -11,12 +11,24 @@
 
 
 #include <iostream>
+#include <cstring>
 #include "Object.hpp"
 
-class Ball : public Object{
+
+class Ball:public Object{
 public:
-    using Object::Object;
-    void draw(float* resultTransposedMatrix_world) override;
+    
+    Ball();
+    Ball(float *initMatrix, float start);
+    void draw(float* resultTransposedMatrix_world);
+    void ready();
+    void render();
+    
+private:
+    float resultMatrix[16];
+    void init();
+    float startTime;
+    float speed;
 };
 
 #endif /* Ball_hpp */

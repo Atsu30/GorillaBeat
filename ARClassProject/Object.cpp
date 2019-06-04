@@ -9,11 +9,6 @@
 #include "Object.hpp"
 #include <opencv2/core.hpp>    // include OpenCV core headers
 
-Object::Object(cv::Point3f startPos, cv::Vec3f startv){
-    pos = startPos;
-    v = startv;
-    dt = 0.001;
-}
 
 void Object::setPos(cv::Point3f new_pos){
     pos = new_pos;
@@ -36,6 +31,8 @@ void Object::move(){
 //    glColor4f(1,0,0,1);
 //    drawSphere(0.005, 10, 10);
 //}
+
+
 
 void Object::debug(){
     std::cout << "pos:" << pos << std::endl;

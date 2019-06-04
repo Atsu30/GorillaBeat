@@ -18,10 +18,15 @@ public:
     cv::Vec3f v;
     double dt;
     
-    Object(cv::Point3f startPos, cv::Vec3f startv);
     void setPos(cv::Point3f new_pos);
     void setVec(cv::Vec3f new_v);
     virtual void draw(float* resultTransposedMatrix_world) = 0;
+    virtual void render(){
+        
+    }
+    virtual void ready(){
+        
+    }
     void move();
     void debug();
 };

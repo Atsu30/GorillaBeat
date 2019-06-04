@@ -15,6 +15,9 @@
 #include "DrawPrimitives.h"
 #include "Object.hpp"
 
+void processInput(GLFWwindow *window,std::vector<Object*>& objects);
+void key_Callback(GLFWwindow *window,int key, int scancode,int action,int mods);
+
 bool debugmode = true;
 bool balldebug = false;
 
@@ -33,7 +36,20 @@ const int code_player1 = 0x0b44;
 const int code_player2 = 0x1228;
 const int code_world = 0x1c44;
 
+float deltaTime = 0.0f;    // time between current frame and last frame
+float lastFrame = 0.0f;
+
+
 //const int virtual_camera_angle = 30;
+
+float initMat[16] = {
+    1,0,0,0,
+    0,1,0,0,
+    0,0,1,0,
+    0,0,-0.2,1
+};
+
+bool sPressed = false;
 
 
 
@@ -110,49 +126,49 @@ void initGL(int argc, char *argv[])
 }
 
 void update(std::vector<Marker> &markers, std::vector<Object*>& objects, Player& player1, Player& player2){
-    
+
     // update position
     for(int i=0; i<markers.size(); i++){
         const int code =markers[i].code;
-        
+
         // fix scale(translate x, y)
         float scale = 0.4;
         markers[i].resultMatrix[3] *= scale;
         markers[i].resultMatrix[7] *= scale;
-        
+
         if(code == code_player1) {
-            
+
             // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_player1[x*4+y] = markers[i].resultMatrix[y*4+x];
-            
+
             // change the coordinate to the world coordinate
             cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player1, resultTransposedMatrix_world);
-            
+
             player1.setPos(pos);
             std::cout << "main player1 pos:" << player1.pos << std::endl;
-            
+
         }else if(code == code_player2){
-            
+
             // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_player2[x*4+y] = markers[i].resultMatrix[y*4+x];
-            
+
             // change the coordinate to the world coordinate
             cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player2, resultTransposedMatrix_world);
-            
+
             player2.setPos(pos);
-            
+
         }else if(code == code_world){
-            
+
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_world[x*4+y] = markers[i].resultMatrix[y*4+x];
         }
     }
-    
+
     // move obj according to the velocity
     for(Object* obj : objects){
         obj->move();
@@ -163,8 +179,15 @@ void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player playe
 
     // clear buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    
+    
+    
+    int size = static_cast<int>(objects.size());
+    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    
     
     // draw background image
     glDisable( GL_DEPTH_TEST );
@@ -180,33 +203,42 @@ void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player playe
     // move to marker-position
     glMatrixMode( GL_MODELVIEW );
     
-    // draw debug objects
-    if(debugmode){
-        // draw world axis
-        glLoadIdentity();
-        glLoadMatrixf( resultTransposedMatrix_world );
-        // x axis
-        glColor4f(1, 0, 0, 1);
-        drawLine(-10, 0, 0, 10, 0, 0);
-        // y axis
-        glColor4f(0, 1, 0, 1);
-        drawLine(0, -10, 0, 0, 10, 0);
-        // z axis
-        glColor4f( 0, 0, 1, 1);
-        drawLine(0, 0, -10, 0, 0, 10);
+    for (int i = 0; i < size; i++) {
+        objects.at(i)->render();
     }
     
+    // draw debug objects
+//    if(debugmode){
+//        // draw world axis
+//        glLoadIdentity();
+//        glLoadMatrixf( resultTransposedMatrix_world );
+//        // x axis
+//        glColor4f(1, 0, 0, 1);
+//        drawLine(-10, 0, 0, 10, 0, 0);
+//        // y axis
+//        glColor4f(0, 1, 0, 1);
+//        drawLine(0, -10, 0, 0, 10, 0);
+//        // z axis
+//        glColor4f( 0, 0, 1, 1);
+//        drawLine(0, 0, -10, 0, 0, 10);
+//    }
+    glLoadIdentity();
+    glLoadMatrixf( resultTransposedMatrix_player1 );
+    //glColor4f(0,0,0,1);
+    drawCube(0.01, 0.05, 0.01);
     // draw player
-    player1.draw(resultTransposedMatrix_world);
-    player2.draw(resultTransposedMatrix_world);
-
+    //player1.draw(resultTransposedMatrix_world);
+    //player2.draw(resultTransposedMatrix_world);
+    
+    // draw ball
+    
 
     //shootBall(1);
     
     // draw ball
-    for(Object* obj : objects){
-        obj->draw(resultTransposedMatrix_world);
-    }
+//    for(Object* obj : objects){
+//        obj->draw(resultTransposedMatrix_world);
+//    }
 
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
@@ -237,6 +269,16 @@ bool checkMarker(std::vector<Marker> &markers, int check_code){
         }
     }
     return false;
+}
+
+void keyprocess(std::vector<Object*>& objects, float currentFrame)
+{
+    if (sPressed)
+    {
+        Ball *ball = new Ball(resultTransposedMatrix_player1,currentFrame);
+        objects.push_back(ball);
+        sPressed = false;
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -300,8 +342,9 @@ int main(int argc, char* argv[]) {
     
     // set object
     std::vector<Object*> objects;
-    Player player1(cv::Point3f(10,10,10), cv::Vec3f(0,0,0));
-    Player player2(cv::Point3f(10,10,10), cv::Vec3f(0,0,0));
+    Player player1;
+    Player player2;
+    
     
     //    float resultMatrix[16];
     
@@ -328,12 +371,21 @@ int main(int argc, char* argv[]) {
         }
         std::cout << std::endl;
         
-//        std::cout << img_bgr.size() << std::endl;
-//        cv::imshow("img_bgr", img_bgr);
-//        cv::waitKey(10); /// Wait for one sec.
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
         
+        processInput(window,objects);
+        
+        glfwSetKeyCallback(window, key_Callback);
+        
+
         /* Update objects position */
         update(markers, objects, player1, player2);
+        
+        /*Prosess the key input accident*/
+        
+        keyprocess(objects,currentFrame);
         
         /* Render here */
         display(img_bgr, objects, player1, player2);
@@ -351,5 +403,22 @@ int main(int argc, char* argv[]) {
     return 0;
     
 }
+
+void processInput(GLFWwindow *window,std::vector<Object*>& objects)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+        
+};
+
+void key_Callback(GLFWwindow *window,int key, int scancode,int action,int mods)
+{
+    if (key==GLFW_KEY_S && action == GLFW_PRESS)
+    {
+        sPressed = true;
+    }
+};
+
+
 
 
