@@ -18,7 +18,7 @@ Ball::Ball()
     init();
 }
 
-Ball::Ball(float initMatrix[16], float start)
+Ball::Ball(float initMatrix[16], float start, int owner)
 {
     for(int i=0;i<16;i++)
     {
@@ -26,6 +26,7 @@ Ball::Ball(float initMatrix[16], float start)
     }
     startTime = start;
     speed = 0.05f;
+    player = owner;
 }
 
 void Ball::init()
@@ -51,7 +52,10 @@ void Ball::render()
 {
     glLoadIdentity();
     glLoadMatrixf(resultMatrix);
-    glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
+    if (player == 1)
+        glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
+    else if (player ==2)
+        glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
     glColor4f(1,0,0,1);
     drawSphere(0.005, 10, 10);
 }

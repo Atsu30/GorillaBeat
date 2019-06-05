@@ -36,8 +36,14 @@ const int code_player1 = 0x0b44;
 const int code_player2 = 0x1228;
 const int code_world = 0x1c44;
 
+const int player_1 = 1;
+const int player_2 = 2;
+
+
 float deltaTime = 0.0f;    // time between current frame and last frame
 float lastFrame = 0.0f;
+float lastShootingFrame1 = -1.0f;
+float lastShootingFrame2 = -1.0f;
 
 
 //const int virtual_camera_angle = 30;
@@ -50,6 +56,7 @@ float initMat[16] = {
 };
 
 bool sPressed = false;
+bool lPressed = false;
 
 
 
@@ -226,6 +233,11 @@ void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player playe
     glLoadMatrixf( resultTransposedMatrix_player1 );
     //glColor4f(0,0,0,1);
     drawCube(0.01, 0.05, 0.01);
+    
+    glLoadIdentity();
+    glLoadMatrixf( resultTransposedMatrix_player2 );
+    //glColor4f(0,0,0,1);
+    drawCube(0.01, 0.05, 0.01);
     // draw player
     //player1.draw(resultTransposedMatrix_world);
     //player2.draw(resultTransposedMatrix_world);
@@ -273,12 +285,23 @@ bool checkMarker(std::vector<Marker> &markers, int check_code){
 
 void keyprocess(std::vector<Object*>& objects, float currentFrame)
 {
-    if (sPressed)
+    if (sPressed && currentFrame-lastShootingFrame1 >0.5)
     {
-        Ball *ball = new Ball(resultTransposedMatrix_player1,currentFrame);
+        Ball *ball = new Ball(resultTransposedMatrix_player1,currentFrame, player_1);
         objects.push_back(ball);
         sPressed = false;
+        lastShootingFrame1 = currentFrame;
     }
+    
+    
+    if (lPressed && currentFrame-lastShootingFrame2 > 0.5)
+    {
+        Ball *ball = new Ball(resultTransposedMatrix_player2,currentFrame, player_2);
+        objects.push_back(ball);
+        lPressed = false;
+        lastShootingFrame2 = currentFrame;
+    }
+    
 }
 
 int main(int argc, char* argv[]) {
@@ -417,6 +440,12 @@ void key_Callback(GLFWwindow *window,int key, int scancode,int action,int mods)
     {
         sPressed = true;
     }
+    
+    if (key==GLFW_KEY_L && action == GLFW_PRESS)
+    {
+        lPressed = true;
+    }
+    
 };
 
 

@@ -19,7 +19,7 @@ class Ball:public Object{
 public:
     
     Ball();
-    Ball(float *initMatrix, float start);
+    Ball(float *initMatrix, float start, int owner);
     void draw(float* resultTransposedMatrix_world);
     void ready();
     void render();
@@ -29,6 +29,8 @@ private:
     void init();
     float startTime;
     float speed;
+    int player;
+    float x,y,z;
 };
 
 #endif /* Ball_hpp */
