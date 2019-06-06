@@ -20,9 +20,12 @@ public:
     
     Ball();
     Ball(float *initMatrix, float start, int owner);
-    void draw(float* resultTransposedMatrix_world);
     void ready();
     void render();
+    
+    float radius;
+    
+    float color;
     
 private:
     float resultMatrix[16];
@@ -30,7 +33,6 @@ private:
     float startTime;
     float speed;
     int player;
-    float x,y,z;
 };
 
 #endif /* Ball_hpp */

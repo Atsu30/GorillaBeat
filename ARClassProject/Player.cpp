@@ -15,8 +15,18 @@ void Player::draw(float* resultTransposedMatrix_world){
     glTranslatef((float) pos.x, (float) pos.y, 0);
     glColor4f(0,0,0,1);
     drawCube(0.01, 0.05, 0.01);
-    std::cout << "world:" << resultTransposedMatrix_world << std::endl;
-    std::cout << "pos: " << pos << std::endl;
+    
+    pos.x=resultTransposedMatrix_world[12];
+    pos.y=resultTransposedMatrix_world[13];
+    pos.z=resultTransposedMatrix_world[14];
+    
+    //std::cout << pos << std:: endl;
+    
+    length = 0.01;
+    height = 0.05;
+    width = 0.01;
+    
+    
 }
 //
 //void shootBall(Player player, std::vector<Object>& objects){

@@ -21,8 +21,11 @@ class Player : public Object{
 public:
     using Object::Object;
     
-    void draw(float* resultTransposedMatrix_world) override;
-    //void shootBall(Player player);
+    void draw(float* resultTransposedMatrix_world);
+    
+    float length, width, height;
+    
+ 
 };
 
 #endif /* Player_hpp */

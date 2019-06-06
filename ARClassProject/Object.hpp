@@ -14,13 +14,10 @@
 
 class Object{
 public:
-    cv::Point3f pos;
-    cv::Vec3f v;
+    
     double dt;
     
-    void setPos(cv::Point3f new_pos);
-    void setVec(cv::Vec3f new_v);
-    virtual void draw(float* resultTransposedMatrix_world) = 0;
+    //virtual void draw(float* resultTransposedMatrix_world) = 0;
     virtual void render(){
         
     }
@@ -29,6 +26,9 @@ public:
     }
     void move();
     void debug();
+    
+    cv::Point3f pos;
+    cv::Vec3f v;
 };
 
 

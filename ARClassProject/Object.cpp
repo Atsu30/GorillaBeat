@@ -10,13 +10,7 @@
 #include <opencv2/core.hpp>    // include OpenCV core headers
 
 
-void Object::setPos(cv::Point3f new_pos){
-    pos = new_pos;
-}
 
-void Object::setVec(cv::Vec3f new_v){
-    v = new_v;
-}
 
 void Object::move(){
     pos.x = pos.x + v[0] * dt;

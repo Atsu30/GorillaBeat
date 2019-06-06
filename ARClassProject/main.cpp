@@ -8,6 +8,9 @@
 #include <opencv2/core.hpp>    // include OpenCV core headers
 #include <opencv2/imgproc.hpp> // include image processing headers
 #include <opencv2/highgui.hpp> // include GUI-related headers
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "MarkerTracker.h"
 #include "Ball.hpp"
@@ -15,7 +18,7 @@
 #include "DrawPrimitives.h"
 #include "Object.hpp"
 
-void processInput(GLFWwindow *window,std::vector<Object*>& objects);
+void processInput(GLFWwindow *window,std::vector<Ball*>& balls);
 void key_Callback(GLFWwindow *window,int key, int scancode,int action,int mods);
 
 bool debugmode = true;
@@ -53,6 +56,13 @@ float initMat[16] = {
     0,1,0,0,
     0,0,1,0,
     0,0,-0.2,1
+};
+
+float initMatBall[16] = {
+    1,0,0,0,
+    0,1,0,0,
+    0,0,1,0,
+    -0.08,-0.02,-0.2,1
 };
 
 bool sPressed = false;
@@ -99,6 +109,51 @@ cv::Point3f getPosInWorld(float* resultTransposedMatrix_object, float* resultTra
     return object_pos;
 }
 
+bool checkcollisions(Ball ball, Player &player)
+{
+    
+    glm::vec3 ballcenter(ball.pos.x, ball.pos.y, ball.pos.z);
+    glm::vec3 playerhalf(player.length/2,player.height/2,player.width/2);
+    glm::vec3 playercener(player.pos.x, player.pos.y, player.pos.z);
+    
+    glm::vec3 difference = ballcenter -playercener;
+    
+    glm::vec3 clamped = glm::clamp(difference,-playerhalf,playerhalf);
+    
+    glm::vec3 closest = playercener + clamped;
+    
+    
+    
+    difference = closest - ballcenter;
+    
+    std::cout << ball.pos << std::endl;
+    
+    std::cout << closest.x <<" "<<closest.y<<" "<<closest.z<< std::endl;
+    
+    //std::cout << player.pos << std::endl;
+    
+    //std::cout << (float)playerhalf.x << std::endl;
+    std::cout << glm::length(difference)<< std::endl;
+    
+    //std::cout << ball.radius << std:: endl;
+    
+    
+    
+    return glm::length(difference) < (ball.radius);
+}
+
+void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
+{
+    for(Ball* ball : balls){
+        if (checkcollisions(*ball, player1))
+        {
+            std::cout << "touch player3" << std::endl;
+            ball->color = 0.1;
+        }
+        else ball->color =1.0f;
+    }
+}
+
 
 
 /* program & OpenGL initialization */
@@ -132,7 +187,7 @@ void initGL(int argc, char *argv[])
     glEnable( GL_LIGHT0 );
 }
 
-void update(std::vector<Marker> &markers, std::vector<Object*>& objects, Player& player1, Player& player2){
+void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, Player& player1, Player& player2){
 
     // update position
     for(int i=0; i<markers.size(); i++){
@@ -153,8 +208,8 @@ void update(std::vector<Marker> &markers, std::vector<Object*>& objects, Player&
             // change the coordinate to the world coordinate
             cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player1, resultTransposedMatrix_world);
 
-            player1.setPos(pos);
-            std::cout << "main player1 pos:" << player1.pos << std::endl;
+            //player1.setPos(pos);
+            //std::cout << "main player1 pos:" << player1.pos << std::endl;
 
         }else if(code == code_player2){
 
@@ -166,7 +221,7 @@ void update(std::vector<Marker> &markers, std::vector<Object*>& objects, Player&
             // change the coordinate to the world coordinate
             cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player2, resultTransposedMatrix_world);
 
-            player2.setPos(pos);
+            //player2.setPos(pos);
 
         }else if(code == code_world){
 
@@ -177,19 +232,19 @@ void update(std::vector<Marker> &markers, std::vector<Object*>& objects, Player&
     }
 
     // move obj according to the velocity
-    for(Object* obj : objects){
+    for(Object* obj : balls){
         obj->move();
     }
 }
 
-void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player player1, Player player2){
+void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, Player &player1, Player &player2){
 
     // clear buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     
     
-    int size = static_cast<int>(objects.size());
+    int size = static_cast<int>(balls.size());
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -211,10 +266,10 @@ void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player playe
     glMatrixMode( GL_MODELVIEW );
     
     for (int i = 0; i < size; i++) {
-        objects.at(i)->render();
+        balls.at(i)->render();
     }
     
-    // draw debug objects
+    // draw debug balls
 //    if(debugmode){
 //        // draw world axis
 //        glLoadIdentity();
@@ -229,28 +284,26 @@ void display(const cv::Mat &img_bgr, std::vector<Object*>& objects, Player playe
 //        glColor4f( 0, 0, 1, 1);
 //        drawLine(0, 0, -10, 0, 0, 10);
 //    }
-    glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix_player1 );
-    //glColor4f(0,0,0,1);
-    drawCube(0.01, 0.05, 0.01);
+//    glLoadIdentity();
+//    glLoadMatrixf( resultTransposedMatrix_player1 );
+//    //glColor4f(0,0,0,1);
+//    drawCube(0.01, 0.05, 0.01);
+//
+//    glLoadIdentity();
+//    glLoadMatrixf( resultTransposedMatrix_player2 );
+//    //glColor4f(0,0,0,1);
+//    drawCube(0.01, 0.05, 0.01);
+    //draw player
+    player1.draw(resultTransposedMatrix_player1);
+    player2.draw(resultTransposedMatrix_player2);
     
-    glLoadIdentity();
-    glLoadMatrixf( resultTransposedMatrix_player2 );
-    //glColor4f(0,0,0,1);
-    drawCube(0.01, 0.05, 0.01);
-    // draw player
-    //player1.draw(resultTransposedMatrix_world);
-    //player2.draw(resultTransposedMatrix_world);
+    Player player3;
+    player3.draw(initMat);
     
-    // draw ball
+    docollisions(balls, player3, player2);
     
-
-    //shootBall(1);
     
-    // draw ball
-//    for(Object* obj : objects){
-//        obj->draw(resultTransposedMatrix_world);
-//    }
+    
 
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
@@ -283,12 +336,12 @@ bool checkMarker(std::vector<Marker> &markers, int check_code){
     return false;
 }
 
-void keyprocess(std::vector<Object*>& objects, float currentFrame)
+void keyprocess(std::vector<Ball*>& balls, float currentFrame)
 {
     if (sPressed && currentFrame-lastShootingFrame1 >0.5)
     {
-        Ball *ball = new Ball(resultTransposedMatrix_player1,currentFrame, player_1);
-        objects.push_back(ball);
+        Ball *ball = new Ball(initMatBall,currentFrame, player_1);
+        balls.push_back(ball);
         sPressed = false;
         lastShootingFrame1 = currentFrame;
     }
@@ -297,12 +350,14 @@ void keyprocess(std::vector<Object*>& objects, float currentFrame)
     if (lPressed && currentFrame-lastShootingFrame2 > 0.5)
     {
         Ball *ball = new Ball(resultTransposedMatrix_player2,currentFrame, player_2);
-        objects.push_back(ball);
+        balls.push_back(ball);
         lPressed = false;
         lastShootingFrame2 = currentFrame;
     }
     
 }
+
+
 
 int main(int argc, char* argv[]) {
     
@@ -364,10 +419,9 @@ int main(int argc, char* argv[]) {
     std::vector<Marker> markers;
     
     // set object
-    std::vector<Object*> objects;
+    std::vector<Ball*> balls;
     Player player1;
     Player player2;
-    
     
     //    float resultMatrix[16];
     
@@ -398,20 +452,22 @@ int main(int argc, char* argv[]) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        processInput(window,objects);
+        processInput(window,balls);
         
         glfwSetKeyCallback(window, key_Callback);
         
 
-        /* Update objects position */
-        update(markers, objects, player1, player2);
+        /* Update balls position */
+        update(markers, balls, player1, player2);
         
         /*Prosess the key input accident*/
         
-        keyprocess(objects,currentFrame);
+        keyprocess(balls,currentFrame);
         
         /* Render here */
-        display(img_bgr, objects, player1, player2);
+        display(img_bgr, balls, player1, player2);
+        
+        //docollisions(balls, player1, player2);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -427,7 +483,7 @@ int main(int argc, char* argv[]) {
     
 }
 
-void processInput(GLFWwindow *window,std::vector<Object*>& objects)
+void processInput(GLFWwindow *window,std::vector<Ball*>& balls)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
