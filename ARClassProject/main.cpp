@@ -132,18 +132,26 @@ bool checkcollisions(Ball ball, Player &player)
 void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
 {
     for(Ball* ball : balls){
-        if (checkcollisions(*ball, player1))
+        
+        if (ball->player == 2)
         {
-            std::cout << "touch player1" << std::endl;
-            ball->color = 0.1;
+            if (checkcollisions(*ball, player1))
+            {
+                std::cout << "touch player1" << std::endl;
+                ball->color = 0.1;
+            }
+            else ball->color = 1;
         }
         
-        if (checkcollisions(*ball, player2))
+        if (ball->player == 1)
         {
-            std::cout << "touch player2" << std::endl;
-            ball->color = 0.1;
+            if (checkcollisions(*ball, player2))
+            {
+                std::cout << "touch player2" << std::endl;
+                ball->color = 0.1;
+            }
+            else ball->color = 1;
         }
-        else ball->color =1.0f;
     }
 }
 

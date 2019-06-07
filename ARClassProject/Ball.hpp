@@ -30,12 +30,14 @@ public:
     
     bool destroy;
     
+    int player;
+    
 private:
     float resultMatrix[16];
     void init();
     float startTime;
     float speed;
-    int player;
+    
 };
 
 #endif /* Ball_hpp */
