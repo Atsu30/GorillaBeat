@@ -147,7 +147,13 @@ void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
     for(Ball* ball : balls){
         if (checkcollisions(*ball, player1))
         {
-            std::cout << "touch player3" << std::endl;
+            std::cout << "touch player1" << std::endl;
+            ball->color = 0.1;
+        }
+        
+        if (checkcollisions(*ball, player2))
+        {
+            std::cout << "touch player2" << std::endl;
             ball->color = 0.1;
         }
         else ball->color =1.0f;
@@ -297,12 +303,6 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, Player &player1,
     player1.draw(resultTransposedMatrix_player1);
     player2.draw(resultTransposedMatrix_player2);
     
-    Player player3;
-    player3.draw(initMat);
-    
-    docollisions(balls, player3, player2);
-    
-    
     
 
     int key = cv::waitKey (10);
@@ -340,7 +340,7 @@ void keyprocess(std::vector<Ball*>& balls, float currentFrame)
 {
     if (sPressed && currentFrame-lastShootingFrame1 >0.5)
     {
-        Ball *ball = new Ball(initMatBall,currentFrame, player_1);
+        Ball *ball = new Ball(resultTransposedMatrix_player1,currentFrame, player_1);
         balls.push_back(ball);
         sPressed = false;
         lastShootingFrame1 = currentFrame;
@@ -467,7 +467,7 @@ int main(int argc, char* argv[]) {
         /* Render here */
         display(img_bgr, balls, player1, player2);
         
-        //docollisions(balls, player1, player2);
+        docollisions(balls, player1, player2);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

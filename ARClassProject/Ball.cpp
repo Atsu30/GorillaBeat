@@ -48,10 +48,10 @@ void Ball::render()
     
     glLoadIdentity();
     glLoadMatrixf(resultMatrix);
-//    if (player == 1)
-//        glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
-//    else if (player ==2)
-//        glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
+    if (player == 1)
+        glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
+    else if (player ==2)
+        glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
     
     glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
     glColor4f(color,0,0,1);
