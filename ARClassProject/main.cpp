@@ -126,14 +126,14 @@ bool checkcollisions(Ball ball, Player &player)
     
     difference = closest - ballcenter;
     
-    std::cout << ball.pos << std::endl;
+    //std::cout << ball.pos << std::endl;
     
-    std::cout << closest.x <<" "<<closest.y<<" "<<closest.z<< std::endl;
+    //std::cout << closest.x <<" "<<closest.y<<" "<<closest.z<< std::endl;
     
     //std::cout << player.pos << std::endl;
     
     //std::cout << (float)playerhalf.x << std::endl;
-    std::cout << glm::length(difference)<< std::endl;
+    //std::cout << glm::length(difference)<< std::endl;
     
     //std::cout << ball.radius << std:: endl;
     
@@ -151,11 +151,11 @@ void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
             ball->color = 0.1;
         }
         
-        if (checkcollisions(*ball, player2))
-        {
-            std::cout << "touch player2" << std::endl;
-            ball->color = 0.1;
-        }
+//        if (checkcollisions(*ball, player2))
+//        {
+//            std::cout << "touch player2" << std::endl;
+//            ball->color = 0.1;
+//        }
         else ball->color =1.0f;
     }
 }
@@ -275,31 +275,7 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, Player &player1,
         balls.at(i)->render();
     }
     
-    // draw debug balls
-//    if(debugmode){
-//        // draw world axis
-//        glLoadIdentity();
-//        glLoadMatrixf( resultTransposedMatrix_world );
-//        // x axis
-//        glColor4f(1, 0, 0, 1);
-//        drawLine(-10, 0, 0, 10, 0, 0);
-//        // y axis
-//        glColor4f(0, 1, 0, 1);
-//        drawLine(0, -10, 0, 0, 10, 0);
-//        // z axis
-//        glColor4f( 0, 0, 1, 1);
-//        drawLine(0, 0, -10, 0, 0, 10);
-//    }
-//    glLoadIdentity();
-//    glLoadMatrixf( resultTransposedMatrix_player1 );
-//    //glColor4f(0,0,0,1);
-//    drawCube(0.01, 0.05, 0.01);
-//
-//    glLoadIdentity();
-//    glLoadMatrixf( resultTransposedMatrix_player2 );
-//    //glColor4f(0,0,0,1);
-//    drawCube(0.01, 0.05, 0.01);
-    //draw player
+  
     player1.draw(resultTransposedMatrix_player1);
     player2.draw(resultTransposedMatrix_player2);
     

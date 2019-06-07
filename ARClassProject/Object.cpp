@@ -29,6 +29,6 @@ void Object::move(){
 
 
 void Object::debug(){
-    std::cout << "pos:" << pos << std::endl;
-    std::cout << "vlocity:" << v << std::endl;
+    //std::cout << "pos:" << pos << std::endl;
+    //std::cout << "vlocity:" << v << std::endl;
 }

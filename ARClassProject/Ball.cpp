@@ -52,14 +52,15 @@ void Ball::render()
         glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
     else if (player ==2)
         glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
-    
-    glTranslatef(speed*(glfwGetTime()-startTime),0.00,0.0);
     glColor4f(color,0,0,1);
     drawSphere(radius, 10, 10);
     
-    pos.x = resultMatrix[12]+speed*(glfwGetTime()-startTime);
-    pos.y = resultMatrix[13];
-    pos.z = resultMatrix[14];
+    GLfloat mat[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, mat);
+    pos.x =mat[12];
+    pos.y =mat[13];
+    pos.z =mat[14];
     
-    //std::cout << pos << std:: endl;
+    
+    std::cout << pos << std:: endl;
 }
