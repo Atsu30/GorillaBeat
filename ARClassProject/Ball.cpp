@@ -29,6 +29,7 @@ Ball::Ball(float initMatrix[16], float start, int owner)
     player = owner;
     radius = 0.005;
     color = 1.0;
+    destroy = false;
 }
 
 void Ball::init()
@@ -36,7 +37,13 @@ void Ball::init()
     
 }
 
-
+void Ball::checkdestory()
+{
+    if (pos.x < -0.2 || pos.x > 0.2 || pos.y < -0.2 || pos.y > 0.2)
+    {
+        destroy = true;
+    }
+}
 
 void Ball::ready()
 {
@@ -61,6 +68,5 @@ void Ball::render()
     pos.y =mat[13];
     pos.z =mat[14];
     
-    
-    std::cout << pos << std:: endl;
+    //std::cout << pos << std:: endl;
 }

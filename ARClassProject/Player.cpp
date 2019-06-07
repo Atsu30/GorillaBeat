@@ -20,7 +20,7 @@ void Player::draw(float* resultTransposedMatrix_world){
     pos.y=resultTransposedMatrix_world[13];
     pos.z=resultTransposedMatrix_world[14];
     
-    //std::cout << pos << std:: endl;
+    std::cout << pos << std:: endl;
     
     length = 0.01;
     height = 0.05;

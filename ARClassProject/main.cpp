@@ -69,7 +69,6 @@ bool sPressed = false;
 bool lPressed = false;
 
 
-
 void InitializeVideoStream( cv::VideoCapture &camera ) {
     if( camera.isOpened() )
         camera.release();
@@ -126,18 +125,6 @@ bool checkcollisions(Ball ball, Player &player)
     
     difference = closest - ballcenter;
     
-    //std::cout << ball.pos << std::endl;
-    
-    //std::cout << closest.x <<" "<<closest.y<<" "<<closest.z<< std::endl;
-    
-    //std::cout << player.pos << std::endl;
-    
-    //std::cout << (float)playerhalf.x << std::endl;
-    //std::cout << glm::length(difference)<< std::endl;
-    
-    //std::cout << ball.radius << std:: endl;
-    
-    
     
     return glm::length(difference) < (ball.radius);
 }
@@ -151,15 +138,14 @@ void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
             ball->color = 0.1;
         }
         
-//        if (checkcollisions(*ball, player2))
-//        {
-//            std::cout << "touch player2" << std::endl;
-//            ball->color = 0.1;
-//        }
+        if (checkcollisions(*ball, player2))
+        {
+            std::cout << "touch player2" << std::endl;
+            ball->color = 0.1;
+        }
         else ball->color =1.0f;
     }
 }
-
 
 
 /* program & OpenGL initialization */
@@ -236,10 +222,16 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, Player& pla
                     resultTransposedMatrix_world[x*4+y] = markers[i].resultMatrix[y*4+x];
         }
     }
-
-    // move obj according to the velocity
-    for(Object* obj : balls){
-        obj->move();
+    
+    
+    for(int i=0;i<balls.size();i++)
+    {
+        balls[i]->checkdestory();
+        if (balls[i]->destroy)
+        {
+            balls[i] = balls.back();
+            balls.pop_back();
+        }
     }
 }
 

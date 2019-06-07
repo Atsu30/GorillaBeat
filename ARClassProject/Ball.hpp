@@ -22,10 +22,13 @@ public:
     Ball(float *initMatrix, float start, int owner);
     void ready();
     void render();
+    void checkdestory();
     
     float radius;
     
     float color;
+    
+    bool destroy;
     
 private:
     float resultMatrix[16];
