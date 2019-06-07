@@ -25,7 +25,7 @@ Ball::Ball(float initMatrix[16], float start, int owner)
         resultMatrix[i]=initMatrix[i];
     }
     startTime = start;
-    speed = 0.05f;
+    speed = 0.1f;
     player = owner;
     radius = 0.005;
     color = 1.0;

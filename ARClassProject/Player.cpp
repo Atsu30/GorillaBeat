@@ -13,7 +13,7 @@ void Player::draw(float* resultTransposedMatrix_world){
     glLoadIdentity();
     glLoadMatrixf( resultTransposedMatrix_world );
     //glTranslatef((float) pos.x, (float) pos.y, 0);
-    glColor4f(0,0,0,1);
+    //glColor4f(0,0,0,1);
     drawCube(0.01, 0.05, 0.01);
     
     pos.x=resultTransposedMatrix_world[12];

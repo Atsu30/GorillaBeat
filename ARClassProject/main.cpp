@@ -17,6 +17,7 @@
 #include "Player.hpp"
 #include "DrawPrimitives.h"
 #include "Object.hpp"
+#include "GameElements.hpp"
 
 void processInput(GLFWwindow *window,std::vector<Ball*>& balls);
 void key_Callback(GLFWwindow *window,int key, int scancode,int action,int mods);
@@ -41,6 +42,8 @@ const int code_world = 0x1c44;
 
 const int player_1 = 1;
 const int player_2 = 2;
+const int OBSTACLE = 0;
+const int BOMB = 1;
 
 
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -108,7 +111,7 @@ cv::Point3f getPosInWorld(float* resultTransposedMatrix_object, float* resultTra
     return object_pos;
 }
 
-bool checkcollisions(Ball ball, Player &player)
+bool checkcollisions_player(Ball ball, Player &player)
 {
     
     glm::vec3 ballcenter(ball.pos.x, ball.pos.y, ball.pos.z);
@@ -129,13 +132,36 @@ bool checkcollisions(Ball ball, Player &player)
     return glm::length(difference) < (ball.radius);
 }
 
-void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
+bool checkcollision_element(Ball ball, GameElements element)
+{
+    
+    glm::vec3 ballcenter(ball.pos.x, ball.pos.y, 0);
+    glm::vec3 playerhalf(element.length/2,element.height/2,0);
+    glm::vec3 playercener(element.pos.x, element.pos.y, 0);
+    
+    glm::vec3 difference = ballcenter -playercener;
+    
+    glm::vec3 clamped = glm::clamp(difference,-playerhalf,playerhalf);
+    
+    glm::vec3 closest = playercener + clamped;
+    
+    
+    
+    difference = closest - ballcenter;
+    
+    
+    return glm::length(difference) < (ball.radius);
+    
+    return 0;
+}
+
+void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements, Player player1, Player player2)
 {
     for(Ball* ball : balls){
         
         if (ball->player == 2)
         {
-            if (checkcollisions(*ball, player1))
+            if (checkcollisions_player(*ball, player1))
             {
                 std::cout << "touch player1" << std::endl;
                 ball->color = 0.1;
@@ -145,12 +171,27 @@ void docollisions(std::vector<Ball*>& balls, Player player1, Player player2)
         
         if (ball->player == 1)
         {
-            if (checkcollisions(*ball, player2))
+            if (checkcollisions_player(*ball, player2))
             {
                 std::cout << "touch player2" << std::endl;
                 ball->color = 0.1;
             }
             else ball->color = 1;
+        }
+        
+        for (GameElements *element : elements)
+        {
+            if (checkcollision_element(*ball, *element))
+            {
+                std::cout << "touch element" << std::endl;
+                if (element->type == OBSTACLE) ball->destroy = true;
+                else if (element->type == BOMB)
+                {
+                    //player lose life
+                }
+            }
+            
+            
         }
     }
 }
@@ -187,7 +228,7 @@ void initGL(int argc, char *argv[])
     glEnable( GL_LIGHT0 );
 }
 
-void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, Player& player1, Player& player2){
+void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, std::vector<GameElements*>& elements,Player& player1, Player& player2){
 
     // update position
     for(int i=0; i<markers.size(); i++){
@@ -243,7 +284,7 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, Player& pla
     }
 }
 
-void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, Player &player1, Player &player2){
+void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, std::vector<GameElements*>& elements,Player &player1, Player &player2){
 
     // clear buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -275,12 +316,14 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, Player &player1,
         balls.at(i)->render();
     }
     
+    for(GameElements* element : elements){
+        element->render();
+    }
+    
   
     player1.draw(resultTransposedMatrix_player1);
     player2.draw(resultTransposedMatrix_player2);
     
-    
-
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
     else if (key == 100) debugmode = !debugmode;
@@ -314,7 +357,7 @@ bool checkMarker(std::vector<Marker> &markers, int check_code){
 
 void keyprocess(std::vector<Ball*>& balls, float currentFrame)
 {
-    if (sPressed && currentFrame-lastShootingFrame1 >0.5)
+    if (sPressed && currentFrame-lastShootingFrame1 >1)
     {
         Ball *ball = new Ball(resultTransposedMatrix_player1,currentFrame, player_1);
         balls.push_back(ball);
@@ -323,7 +366,7 @@ void keyprocess(std::vector<Ball*>& balls, float currentFrame)
     }
     
     
-    if (lPressed && currentFrame-lastShootingFrame2 > 0.5)
+    if (lPressed && currentFrame-lastShootingFrame2 > 1)
     {
         Ball *ball = new Ball(resultTransposedMatrix_player2,currentFrame, player_2);
         balls.push_back(ball);
@@ -396,8 +439,16 @@ int main(int argc, char* argv[]) {
     
     // set object
     std::vector<Ball*> balls;
+    std::vector<GameElements*> elements;
     Player player1;
     Player player2;
+    
+    
+    GameElements *obstable = new GameElements(0,0,-0.2,OBSTACLE);
+    elements.push_back(obstable);
+    
+    GameElements *bomb = new GameElements(0.05,0.05,-0.2,BOMB);
+    elements.push_back(bomb);
     
     //    float resultMatrix[16];
     
@@ -434,16 +485,16 @@ int main(int argc, char* argv[]) {
         
 
         /* Update balls position */
-        update(markers, balls, player1, player2);
+        update(markers, balls, elements, player1, player2);
         
         /*Prosess the key input accident*/
         
         keyprocess(balls,currentFrame);
         
         /* Render here */
-        display(img_bgr, balls, player1, player2);
+        display(img_bgr, balls, elements,player1,player2);
         
-        docollisions(balls, player1, player2);
+        docollisions(balls, elements, player1, player2);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

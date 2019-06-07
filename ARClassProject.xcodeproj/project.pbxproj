@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B26295122AA57430038A440 /* GameElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B26294F22AA57430038A440 /* GameElements.cpp */; };
 		5D0DD026229FE07C00CE4593 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D0DD024229FE07C00CE4593 /* Ball.cpp */; };
 		5D2BF2FC22A2612E009FE4E3 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BF2FA22A2612E009FE4E3 /* Object.cpp */; };
 		5D2BF2FF22A26665009FE4E3 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BF2FD22A26665009FE4E3 /* Player.cpp */; };
@@ -81,6 +82,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B26294F22AA57430038A440 /* GameElements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameElements.cpp; sourceTree = "<group>"; };
+		5B26295022AA57430038A440 /* GameElements.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameElements.hpp; sourceTree = "<group>"; };
 		5D0DD024229FE07C00CE4593 /* Ball.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ball.cpp; sourceTree = "<group>"; };
 		5D0DD025229FE07C00CE4593 /* Ball.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ball.hpp; sourceTree = "<group>"; };
 		5D2BF2FA22A2612E009FE4E3 /* Object.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
@@ -243,6 +246,8 @@
 				5DC04812229BC42B005BB094 /* PoseEstimation.cpp */,
 				5DC04815229BC43B005BB094 /* DrawPrimitives.h */,
 				5DA97D8B22A3CCFE00BD70AA /* DrawPrimitives.cpp */,
+				5B26294F22AA57430038A440 /* GameElements.cpp */,
+				5B26295022AA57430038A440 /* GameElements.hpp */,
 			);
 			path = ARClassProject;
 			sourceTree = "<group>";
@@ -360,6 +365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B26295122AA57430038A440 /* GameElements.cpp in Sources */,
 				5D0DD026229FE07C00CE4593 /* Ball.cpp in Sources */,
 				5DC04813229BC42B005BB094 /* PoseEstimation.cpp in Sources */,
 				5D2BF2FF22A26665009FE4E3 /* Player.cpp in Sources */,
