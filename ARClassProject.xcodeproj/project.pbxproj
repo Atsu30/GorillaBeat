@@ -146,6 +146,7 @@
 		5DC7448722968A4F00771726 /* libopencv_calib3d.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_calib3d.4.1.0.dylib; sourceTree = "<group>"; };
 		5DC7448822968A4F00771726 /* libopencv_flann.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_flann.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_flann.4.1.0.dylib; sourceTree = "<group>"; };
 		FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = MarkerTracker.cpp; sourceTree = "<group>"; tabWidth = 2; };
+		FD89A32922AB78ED00F8558B /* GameLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameLoop.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +244,7 @@
 				5DC04812229BC42B005BB094 /* PoseEstimation.cpp */,
 				5DC04815229BC43B005BB094 /* DrawPrimitives.h */,
 				5DA97D8B22A3CCFE00BD70AA /* DrawPrimitives.cpp */,
+				FD89A32922AB78ED00F8558B /* GameLoop.hpp */,
 			);
 			path = ARClassProject;
 			sourceTree = "<group>";
