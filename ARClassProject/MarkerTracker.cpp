@@ -105,6 +105,7 @@ void MarkerTracker::cleanup()
 
 void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers )
 {
+  cv::flip(image_bgr, image_bgr, 1);
   const int image_height = image_bgr.rows;
   const int image_width = image_bgr.cols;
   bool isFirstStripe = true;
