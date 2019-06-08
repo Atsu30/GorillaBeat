@@ -18,6 +18,7 @@
 #include "DrawPrimitives.h"
 #include "Object.hpp"
 #include "GameElements.hpp"
+#include "GameLoop.hpp"
 
 void processInput(GLFWwindow *window,std::vector<Ball*>& balls);
 void key_Callback(GLFWwindow *window,int key, int scancode,int action,int mods);
@@ -51,6 +52,8 @@ float lastFrame = 0.0f;
 float lastShootingFrame1 = -1.0f;
 float lastShootingFrame2 = -1.0f;
 
+int p1Life = 3;
+int p2Life = 3;
 
 //const int virtual_camera_angle = 30;
 
@@ -165,6 +168,7 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             {
                 std::cout << "touch player1" << std::endl;
                 ball->color = 0.1;
+                p1Life--;
             }
             else ball->color = 1;
         }
@@ -175,6 +179,7 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             {
                 std::cout << "touch player2" << std::endl;
                 ball->color = 0.1;
+                p2Life--;
             }
             else ball->color = 1;
         }
@@ -323,7 +328,8 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, std::vector<Game
   
     player1.draw(resultTransposedMatrix_player1);
     player2.draw(resultTransposedMatrix_player2);
-    
+
+    updateLives(p1Life,p2Life);
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
     else if (key == 100) debugmode = !debugmode;

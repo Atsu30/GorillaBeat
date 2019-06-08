@@ -144,3 +144,13 @@ void drawSnowman( bool female = 0)
     glRotatef( 90, 0, 1, 0 );
     //solidCone( 0.1, 0.3, 10, 10 );
 }
+
+void drawRectangle(double w, double h) {
+    glBegin(GL_POLYGON);
+    glVertex3f(0, 0, 0.0);
+    glVertex3f(w, 0.0, 0.0);
+    glVertex3f(w, 0.0 - h, 0.0);
+    glVertex3f(0.0, 0.0 - h, 0.0);
+    glEnd();
+    
+}

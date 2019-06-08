@@ -13,3 +13,5 @@ void drawSphere(double r, int lats, int longs);
 void drawCube(double width, double height, double length);
 void drawLine(double x1, double y1, double z1, double x2, double y2, double z2);
 void drawSnowman( bool female);
+
+void drawRectangle(double width, double height);
