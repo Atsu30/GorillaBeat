@@ -46,6 +46,9 @@ const int player_2 = 2;
 const int OBSTACLE = 0;
 const int BOMB = 1;
 
+const int NORMAL = 0;
+const int DAMAGED = 1;
+
 
 float deltaTime = 0.0f;    // time between current frame and last frame
 float lastFrame = 0.0f;
@@ -158,7 +161,7 @@ bool checkcollision_element(Ball ball, GameElements element)
     return 0;
 }
 
-void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements, Player player1, Player player2)
+void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements, Player& player1, Player& player2)
 {
     for(Ball* ball : balls){
         
@@ -167,8 +170,12 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             if (checkcollisions_player(*ball, player1))
             {
                 std::cout << "touch player1" << std::endl;
-                ball->color = 0.1;
                 p1Life--;
+                
+                player1.color = cv::Vec3f(255, 0, 0);
+                
+                ball->color = 0.1;
+                
             }
             else ball->color = 1;
         }
@@ -178,8 +185,9 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             if (checkcollisions_player(*ball, player2))
             {
                 std::cout << "touch player2" << std::endl;
-                ball->color = 0.1;
                 p2Life--;
+
+                player2.color = cv::Vec3f(255, 0, 0);
             }
             else ball->color = 1;
         }
@@ -240,12 +248,11 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, std::vector
         const int code =markers[i].code;
 
         // fix scale(translate x, y)
-        float scale = 0.4;
+        float scale = 0.2;
         markers[i].resultMatrix[3] *= scale;
         markers[i].resultMatrix[7] *= scale;
 
         if(code == code_player1) {
-
             // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
@@ -258,7 +265,6 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, std::vector
             //std::cout << "main player1 pos:" << player1.pos << std::endl;
 
         }else if(code == code_player2){
-
             // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
@@ -294,14 +300,10 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, std::vector<Game
     // clear buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
-    
-    
     int size = static_cast<int>(balls.size());
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
-    
     
     // draw background image
     glDisable( GL_DEPTH_TEST );
@@ -439,7 +441,7 @@ int main(int argc, char* argv[]) {
     initGL(argc, argv);
     
     // setup OpenCV
-    const double kMarkerSize = 0.1;// 0.03; // [m]
+    const double kMarkerSize = 0.2;// 0.03; // [m]
     MarkerTracker markerTracker(kMarkerSize);
     std::vector<Marker> markers;
     

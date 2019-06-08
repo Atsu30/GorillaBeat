@@ -20,12 +20,12 @@
 class Player : public Object{
 public:
     using Object::Object;
-    
+    Player();
     void draw(float* resultTransposedMatrix_world);
     
     float length, width, height;
-    
- 
+    cv::Vec3f color;
+    bool state;
 };
 
 #endif /* Player_hpp */
