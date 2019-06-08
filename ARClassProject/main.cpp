@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <CoreFoundation/CoreFoundation.h>
 
 #include "MarkerTracker.h"
 #include "Ball.hpp"
@@ -37,8 +38,8 @@ int towardscounter = 0;
 int camera_width;
 int camera_height;
 
-const int code_player1 = 0x0b44;
-const int code_player2 = 0x1228;
+const int code_player1 = 0x0d22;
+const int code_player2 = 0x1068;
 const int code_world = 0x1c44;
 
 const int player_1 = 1;
@@ -78,6 +79,30 @@ bool sPressed = false;
 bool lPressed = false;
 
 
+void MessageBox(char* header, char* message)
+{
+    CFStringRef header_ref = CFStringCreateWithCString(NULL,header,strlen(header));
+    CFStringRef message_ref = CFStringCreateWithCString(NULL,message,strlen(message));
+    
+    CFOptionFlags result;
+    
+    CFUserNotificationDisplayAlert(
+                                   0,
+                                   kCFUserNotificationNoteAlertLevel,
+                                   NULL,
+                                   NULL,
+                                   NULL,
+                                   header_ref,
+                                   message_ref,
+                                   NULL,
+                                   CFSTR("Cancel"),
+                                   NULL,
+                                   &result
+                                   );
+    
+    CFRelease(header_ref);
+    CFRelease(message_ref);
+}
 void InitializeVideoStream( cv::VideoCapture &camera ) {
     if( camera.isOpened() )
         camera.release();
@@ -161,6 +186,20 @@ bool checkcollision_element(Ball ball, GameElements element)
     return 0;
 }
 
+void checkState(GLFWwindow *window)
+{
+    if (p1Life == 0)
+    {
+        MessageBox("GAME SET!", "Player 2 wins!");
+        glfwSetWindowShouldClose(window, true);
+    }
+    
+    if (p2Life == 0)
+    {
+        MessageBox("GAME SET!", "Player 1 wins!");
+        glfwSetWindowShouldClose(window, true);
+    }
+}
 void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements, Player& player1, Player& player2)
 {
     for(Ball* ball : balls){
@@ -334,7 +373,6 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, std::vector<Game
     player1.draw(resultTransposedMatrix_player1);
     player2.draw(resultTransposedMatrix_player2);
 
-    updateLives(p1Life,p2Life);
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
     else if (key == 100) debugmode = !debugmode;
@@ -390,6 +428,7 @@ void keyprocess(std::vector<Ball*>& balls, float currentFrame)
 
 
 int main(int argc, char* argv[]) {
+    
     
     cv::VideoCapture cap;
     GLFWwindow* window;
@@ -506,6 +545,8 @@ int main(int argc, char* argv[]) {
         display(img_bgr, balls, elements,player1,player2);
         
         docollisions(balls, elements, player1, player2);
+        checkState(window);
+        updateLives(p1Life,p2Life);
         
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
