@@ -38,8 +38,8 @@ int towardscounter = 0;
 int camera_width;
 int camera_height;
 
-const int code_player1 = 0x0d22;
-const int code_player2 = 0x1068;
+const int code_player1 = 0x0b44;
+const int code_player2 = 0x1228;
 const int code_world = 0x1c44;
 
 const int player_1 = 1;
@@ -186,7 +186,12 @@ bool checkcollision_element(Ball ball, GameElements element)
 {
     
     glm::vec3 ballcenter(ball.pos.x, ball.pos.y, 0);
-    glm::vec3 playerhalf(element.length/2,element.height/2,0);
+    glm::vec3 playerhalf;
+    if(element.type == OBSTACLE){
+        playerhalf = glm::vec3(element.length/2,element.height/2,0);
+    }else{
+        playerhalf = glm::vec3(element.radius,element.radius,0);
+    }
     glm::vec3 playercener(element.pos.x, element.pos.y, 0);
     
     glm::vec3 difference = ballcenter -playercener;
