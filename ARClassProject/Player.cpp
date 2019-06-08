@@ -10,6 +10,7 @@
 #include "DrawPrimitives.h"
 
 Player::Player(){
+    life = 3;
     length = 0.01;
     height = 0.05;
     width = 0.01;

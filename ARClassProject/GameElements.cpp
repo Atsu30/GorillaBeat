@@ -35,7 +35,7 @@ GameElements::GameElements(float startx, float starty, float startz, int T)
         resultMatrix[i] = initMat[i];
     }
     
-    length = 0.01;
+    length = 0.005;
     height = 0.05;
     width = 0.01;
     type = T;
@@ -59,7 +59,6 @@ void GameElements::render()
     {
         glLoadIdentity();
         glLoadMatrixf( resultMatrix );
-        //glTranslatef((float) pos.x, (float) pos.y, 0);
         glColor4f(1.0, 1.0, 1.0 ,1);
         drawCube(length, height, width);
     }
@@ -79,4 +78,12 @@ void GameElements::render()
     pos.z =mat[14];
     
  
+}
+
+void GameElements::move(){
+    if(type == 1){
+        resultMatrix[13] += 0.001;
+        
+        if(resultMatrix[13] > 0.1)resultMatrix[13] = -0.1;
+    }
 }

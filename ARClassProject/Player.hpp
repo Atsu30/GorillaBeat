@@ -24,8 +24,10 @@ public:
     void draw(float* resultTransposedMatrix_world);
     
     float length, width, height;
+    int life;
     cv::Vec3f color;
     bool state;
+    float damagedStartTime;
 };
 
 #endif /* Player_hpp */
