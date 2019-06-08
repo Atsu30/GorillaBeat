@@ -49,14 +49,13 @@ const int BOMB = 1;
 const int NORMAL = 0;
 const int DAMAGED = 1;
 
+const int damagedTime = 3.0;
+
 
 float deltaTime = 0.0f;    // time between current frame and last frame
 float lastFrame = 0.0f;
 float lastShootingFrame1 = -1.0f;
 float lastShootingFrame2 = -1.0f;
-
-int p1Life = 3;
-int p2Life = 3;
 
 //const int virtual_camera_angle = 30;
 
@@ -117,6 +116,26 @@ cv::Point3f getPosInWorld(float* resultTransposedMatrix_object, float* resultTra
     return object_pos;
 }
 
+void damaged(Player& player){
+    if(player.state != DAMAGED){
+        player.life--;
+        player.state = DAMAGED;
+        player.color = cv::Vec3f(1.0, 0, 0);
+        player.damagedStartTime = glfwGetTime();
+    }
+}
+
+void checkState(Player& player){
+    if(player.state == DAMAGED){
+        float deltaTime = glfwGetTime() - player.damagedStartTime;
+        if(deltaTime > damagedTime){
+            player.state = NORMAL;
+            player.color = cv::Vec3f(1.0, 1.0, 1.0);
+        }
+    }
+}
+
+
 bool checkcollisions_player(Ball ball, Player &player)
 {
     
@@ -170,14 +189,8 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             if (checkcollisions_player(*ball, player1))
             {
                 std::cout << "touch player1" << std::endl;
-                p1Life--;
-                
-                player1.color = cv::Vec3f(255, 0, 0);
-                
-                ball->color = 0.1;
-                
+                damaged(player1);
             }
-            else ball->color = 1;
         }
         
         if (ball->player == 1)
@@ -185,11 +198,8 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             if (checkcollisions_player(*ball, player2))
             {
                 std::cout << "touch player2" << std::endl;
-                p2Life--;
-
-                player2.color = cv::Vec3f(255, 0, 0);
+                damaged(player2);
             }
-            else ball->color = 1;
         }
         
         for (GameElements *element : elements)
@@ -200,7 +210,11 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
                 if (element->type == OBSTACLE) ball->destroy = true;
                 else if (element->type == BOMB)
                 {
-                    //player lose life
+                    if (ball->player == 2){
+                        damaged(player1);
+                    }else if (ball->player == 1){
+                        damaged(player2);
+                    }
                 }
             }
             
@@ -253,27 +267,14 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, std::vector
         markers[i].resultMatrix[7] *= scale;
 
         if(code == code_player1) {
-            // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_player1[x*4+y] = markers[i].resultMatrix[y*4+x];
 
-            // change the coordinate to the world coordinate
-            cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player1, resultTransposedMatrix_world);
-
-            //player1.setPos(pos);
-            //std::cout << "main player1 pos:" << player1.pos << std::endl;
-
         }else if(code == code_player2){
-            // transpose
             for (int x=0; x<4; ++x)
                 for (int y=0; y<4; ++y)
                     resultTransposedMatrix_player2[x*4+y] = markers[i].resultMatrix[y*4+x];
-
-            // change the coordinate to the world coordinate
-            cv::Point3f pos = getPosInWorld(resultTransposedMatrix_player2, resultTransposedMatrix_world);
-
-            //player2.setPos(pos);
 
         }else if(code == code_world){
 
@@ -293,6 +294,10 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, std::vector
             balls.pop_back();
         }
     }
+    
+    // check player state
+    checkState(player1);
+    checkState(player2);
 }
 
 void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, std::vector<GameElements*>& elements,Player &player1, Player &player2){
@@ -328,10 +333,29 @@ void display(const cv::Mat &img_bgr, std::vector<Ball*>& balls, std::vector<Game
     }
     
   
-    player1.draw(resultTransposedMatrix_player1);
-    player2.draw(resultTransposedMatrix_player2);
+    // draw player
+    if(player1.state == DAMAGED){
+        float deltaTime = glfwGetTime() - player1.damagedStartTime;
+        int n = int(deltaTime * 10) & 6;
+        if(0 <= n && n < 3){
+            player1.draw(resultTransposedMatrix_player1);
+        }
+    }else{
+        player1.draw(resultTransposedMatrix_player1);
+    }
+    
+    if(player2.state == DAMAGED){
+        float deltaTime = glfwGetTime() - player2.damagedStartTime;
+        int n = int(deltaTime * 10) & 6;
+        if(0 <= n && n < 3){
+            player2.draw(resultTransposedMatrix_player2);
+        }
+    }else{
+        player2.draw(resultTransposedMatrix_player2);
+    }
 
-    updateLives(p1Life,p2Life);
+    updateLives(player1.life, player2.life);
+    
     int key = cv::waitKey (10);
     if (key == 27) exit(0);
     else if (key == 100) debugmode = !debugmode;
@@ -452,8 +476,8 @@ int main(int argc, char* argv[]) {
     Player player2;
     
     
-    GameElements *obstable = new GameElements(0,0,-0.2,OBSTACLE);
-    elements.push_back(obstable);
+//    GameElements *obstable = new GameElements(0,0,-0.2,OBSTACLE);
+//    elements.push_back(obstable);
     
     GameElements *bomb = new GameElements(0.05,0.05,-0.2,BOMB);
     elements.push_back(bomb);

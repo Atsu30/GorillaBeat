@@ -10,11 +10,12 @@
 #include "DrawPrimitives.h"
 
 Player::Player(){
+    life = 3;
     length = 0.01;
     height = 0.05;
     width = 0.01;
     
-    color = cv::Vec3f(255,255,255);
+    color = cv::Vec3f(1.0,1.0,1.0);
     state = 0;
 }
 

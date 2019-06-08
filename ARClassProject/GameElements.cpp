@@ -60,7 +60,7 @@ void GameElements::render()
         glLoadIdentity();
         glLoadMatrixf( resultMatrix );
         //glTranslatef((float) pos.x, (float) pos.y, 0);
-        glColor4f(0,0,0,1);
+        glColor4f(1.0,1.0,1.0,1);
         drawCube(length, height, width);
     }
     else if (type == 1)
