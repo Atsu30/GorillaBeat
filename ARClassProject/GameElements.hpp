@@ -25,6 +25,7 @@ public:
     GameElements(float startx, float starty, float startz, int T);
     void ready();
     void render();
+    void move();
     
     float radius;
     

@@ -210,9 +210,9 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
                 if (element->type == OBSTACLE) ball->destroy = true;
                 else if (element->type == BOMB)
                 {
-                    if (ball->player == 2){
+                    if (ball->player == 1){
                         damaged(player1);
-                    }else if (ball->player == 1){
+                    }else if (ball->player == 2){
                         damaged(player2);
                     }
                 }
@@ -293,6 +293,11 @@ void update(std::vector<Marker> &markers, std::vector<Ball*>& balls, std::vector
             balls[i] = balls.back();
             balls.pop_back();
         }
+    }
+    
+    // move bomb
+    for(GameElements* element : elements){
+        element->move();
     }
     
     // check player state
@@ -476,10 +481,10 @@ int main(int argc, char* argv[]) {
     Player player2;
     
     
-//    GameElements *obstable = new GameElements(0,0,-0.2,OBSTACLE);
-//    elements.push_back(obstable);
+    GameElements *obstable = new GameElements(0,0,-0.2,OBSTACLE);
+    elements.push_back(obstable);
     
-    GameElements *bomb = new GameElements(0.05,0.05,-0.2,BOMB);
+    GameElements *bomb = new GameElements(0.0,0.0,-0.2,BOMB);
     elements.push_back(bomb);
     
     //    float resultMatrix[16];
