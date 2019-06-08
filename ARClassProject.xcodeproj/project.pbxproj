@@ -66,6 +66,7 @@
 		5DC744B622968A4F00771726 /* libopencv_calib3d.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC7448722968A4F00771726 /* libopencv_calib3d.4.1.0.dylib */; };
 		5DC744B722968A4F00771726 /* libopencv_flann.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DC7448822968A4F00771726 /* libopencv_flann.4.1.0.dylib */; };
 		FD3FD423229D0E6D00657C58 /* MarkerTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */; };
+		FDC4455622AB97E500853A67 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC4455522AB97E500853A67 /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -150,6 +151,7 @@
 		5DC7448822968A4F00771726 /* libopencv_flann.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_flann.4.1.0.dylib; path = ../../../../usr/local/Cellar/opencv/4.1.0_2/lib/libopencv_flann.4.1.0.dylib; sourceTree = "<group>"; };
 		FD3FD422229D0E6D00657C58 /* MarkerTracker.cpp */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = MarkerTracker.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		FD89A32922AB78ED00F8558B /* GameLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameLoop.hpp; sourceTree = "<group>"; };
+		FDC4455522AB97E500853A67 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDC4455622AB97E500853A67 /* CoreFoundation.framework in Frameworks */,
 				5DC04817229BC7A9005BB094 /* OpenGL.framework in Frameworks */,
 				5DC744592296656100771726 /* libopencv_highgui.4.1.0.dylib in Frameworks */,
 				5DC04819229BC819005BB094 /* libglfw.3.3.dylib in Frameworks */,
@@ -257,6 +260,7 @@
 		5DC744572296656100771726 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FDC4455522AB97E500853A67 /* CoreFoundation.framework */,
 				5DC04818229BC819005BB094 /* libglfw.3.3.dylib */,
 				5DC04816229BC7A9005BB094 /* OpenGL.framework */,
 				5DC7448122968A4F00771726 /* libopencv_aruco.4.1.0.dylib */,
