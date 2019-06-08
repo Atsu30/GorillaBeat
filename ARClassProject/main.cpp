@@ -170,7 +170,10 @@ void docollisions(std::vector<Ball*>& balls,std::vector<GameElements*>& elements
             if (checkcollisions_player(*ball, player1))
             {
                 std::cout << "touch player1" << std::endl;
-                p1Life--;
+                if(player1.state != DAMAGED){
+                    p1Life--;
+                    player1.state = DAMAGED;
+                }
                 
                 player1.color = cv::Vec3f(255, 0, 0);
                 

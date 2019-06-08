@@ -71,6 +71,7 @@ void drawCube(double width, double height, double length) {
         { 0.0,-1.0, 0.0 },
         { 0.0, 1.0, 0.0 }
     };
+    
 
     glBegin( GL_QUADS );
     for (size_t i = 0; i < 6; ++i)

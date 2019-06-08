@@ -14,7 +14,7 @@ Player::Player(){
     height = 0.05;
     width = 0.01;
     
-    color = cv::Vec3f(255,255,255);
+    color = cv::Vec3f(1.0,1.0,1.0);
     state = 0;
 }
 
@@ -22,7 +22,7 @@ void Player::draw(float* resultTransposedMatrix_world){
     glLoadIdentity();
     glLoadMatrixf( resultTransposedMatrix_world );
     
-    glColor3f(color[0], color[1], color[2]);
+    glColor4f(color[0], color[1], color[2], 1.0);
     drawCube(0.01, 0.05, 0.01);
     
     pos.x=resultTransposedMatrix_world[12];
